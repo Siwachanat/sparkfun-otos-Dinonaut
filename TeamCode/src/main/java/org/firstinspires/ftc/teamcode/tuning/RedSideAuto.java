@@ -27,6 +27,7 @@ public class RedSideAuto extends LinearOpMode {
     public class Lift {
         private DcMotorEx liftR;
         private DcMotorEx liftL;
+        public int LiftReference;
 
         public Lift(HardwareMap hardwareMap) {
             liftR = hardwareMap.get(DcMotorEx.class, "liftMotorR");
@@ -35,6 +36,7 @@ public class RedSideAuto extends LinearOpMode {
             liftL.setDirection(DcMotorSimple.Direction.FORWARD);
             liftR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             liftL.setDirection(DcMotorSimple.Direction.FORWARD);
+            LiftReference = liftL.getCurrentPosition();
         }
 
         public class LiftUp implements Action {
@@ -52,11 +54,11 @@ public class RedSideAuto extends LinearOpMode {
                 double posL = liftL.getCurrentPosition();
 
                 packet.put("liftPos", posL);
-                if (posL > -1000) {
+                if (posL < LiftReference +1200) {
                     return true;
                 } else {
-                    liftR.setPower(0);
-                    liftL.setPower(0);
+                    liftR.setPower(0.1);
+                    liftL.setPower(0.1);
                     return false;
                 }
             }
@@ -76,7 +78,7 @@ public class RedSideAuto extends LinearOpMode {
                     initialized = true;
                 }
 
-                double pos = liftR.getCurrentPosition();
+                double pos = liftL.getCurrentPosition();
                 packet.put("liftPos", pos);
                 if (pos > 100.0) {
                     return true;
@@ -92,11 +94,83 @@ public class RedSideAuto extends LinearOpMode {
         }
     }
 
-
-
-
-
-
+    public class Mission {
+        private Servo gripper2;
+        private Servo SL;
+        private Servo SR;
+        private Servo Smid;
+        public Mission(HardwareMap hardwareMap) {
+            gripper2 = hardwareMap.get(Servo.class, "Gripper");
+            SL = hardwareMap.get(Servo.class, "SL");
+            SR = hardwareMap.get(Servo.class, "SR");
+            Smid = hardwareMap.get(Servo.class, "Smid");
+            gripper2.setPosition(0.81);
+        }
+        public class Set implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                gripper2.setPosition(0.81);
+                sleep(200);
+                Smid.setPosition(0.11);
+                SR.setPosition(0.5);
+                SL.setPosition(0.5);
+                return false;
+            }
+        }
+        public Action set() {
+            return new Set();
+        }
+        public class Grip implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                gripper2.setPosition(0.81);
+                sleep(200);
+                Smid.setPosition(0.58);
+                SR.setPosition(1);
+                SL.setPosition(0);
+                return false;
+            }
+        }
+        public Action grip() {
+            return new Grip();
+        }
+        public class Re implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                gripper2.setPosition(0.5);
+                Smid.setPosition(0.05);
+                return false;
+            }
+        }
+        public Action releases() {
+            return new Re();
+        }
+        public class Mid implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                Smid.setPosition(0.11);
+                SR.setPosition(0.45);
+                SL.setPosition(0.55);
+                return false;
+            }
+        }
+        public Action mid() {
+            return new Mid();
+        }
+        public class Af implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                gripper2.setPosition(0.5);
+                Smid.setPosition(0.57);
+                SR.setPosition(0.37);
+                SL.setPosition(0.63);
+                return false;
+            }
+        }
+        public Action af() {
+            return new Af();
+        }
+    }
 
     public class Gripper {
         private Servo gripper;
@@ -193,7 +267,7 @@ public class RedSideAuto extends LinearOpMode {
         public class Up implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                rotate.setPosition(0.41);
+                rotate.setPosition(0.72);
                 return false;
             }
         }
@@ -204,7 +278,7 @@ public class RedSideAuto extends LinearOpMode {
         public class Mid implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                rotate.setPosition(0.2);
+                rotate.setPosition(0.36);
                 return false;
             }
         }
@@ -215,57 +289,57 @@ public class RedSideAuto extends LinearOpMode {
     }
     @Override
     public void runOpMode() {
-        Pose2d initialPose = new Pose2d(0, 0, Math.toRadians(0));
+        Pose2d initialPose = new Pose2d(-62.5, -23, Math.toRadians(0));
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, initialPose);
         Gripper gripper = new Gripper(hardwareMap);
         Slide slide = new Slide(hardwareMap);
         Rot rot = new Rot(hardwareMap);
         Lift lift = new Lift(hardwareMap);
-
+        Mission mission = new Mission(hardwareMap);
         // vision here that outputs position
 
 
         TrajectoryActionBuilder Tomid = drive.actionBuilder(initialPose)
-                .splineToSplineHeading( new Pose2d(25,25,0),Math.PI*0)
-                .waitSeconds(1);
-
-        TrajectoryActionBuilder tab1 = drive.actionBuilder(initialPose)
-                .splineToSplineHeading( new Pose2d(4,-10,0),-Math.PI*0)
-                //.setTangent(0)
-                // .lineToX(7)
-                .splineToSplineHeading( new Pose2d(50,-10,0),Math.PI*0)
-                .waitSeconds(0.5)
-                //.splineToSplineHeading( new Pose2d(50,-22,0),Math.PI*0)
-                .setTangent(0)
-                .strafeTo(new Vector2d(50,-22))
-                .waitSeconds(0.01)
-//                .setTangent(0)
-                .lineToX(5)
-                .waitSeconds(0.15)
-                .setTangent(0)
-                .lineToX(50)
-                .waitSeconds(0.01)
-                .setTangent(0)
-                .strafeTo(new Vector2d(50,-32))
-                .waitSeconds(0.01)
-                .lineToX(5)
-                .lineToX(50)
-                .waitSeconds(0.01)
-                .setTangent(0)
-                .strafeTo(new Vector2d(50,-39 ))
-                .waitSeconds(0.01)
-                .lineToX(5)
-                .waitSeconds(0.01)
-                .setTangent(0)
-                .strafeTo(new Vector2d(5,-22 ))
-//                .splineToSplineHeading( new Pose2d(45,-22,0),Math.PI*0)
-//                .splineToSplineHeading( new Pose2d(4,-22,0),Math.PI*0)
+                .splineToSplineHeading( new Pose2d(-35,0,3.14159226535897932384626433832795028841),Math.PI*0)
                 .waitSeconds(0.5);
 
+        TrajectoryActionBuilder tab1 = drive.actionBuilder(initialPose)
+                .setTangent(0)
+                .lineToX(-52)
+//                .waitSeconds(0.15)
+//                .turnTo(Math.toRadians(0))
+
+                .waitSeconds(0.15)
+                .setTangent(0)
+                .strafeTo(new Vector2d(-35,-30))
+                .waitSeconds(0.01)
+                .setTangent(0)
+                .lineToX(-14)
+                .waitSeconds(0.15)
+                .setTangent(0)
+                .strafeTo(new Vector2d(-14,-45))
+                .waitSeconds(0.01)
+                .lineToX(-52)
+                .waitSeconds(0.15)
+                .setTangent(0)
+                .lineToX(-14)
+                .waitSeconds(0.01)
+                .setTangent(0)
+                .strafeTo(new Vector2d(-14,-55))
+                .waitSeconds(0.01)
+                .lineToX(-52)
+                .lineToX(-45)
+                .waitSeconds(0.01)
+                .splineToSplineHeading( new Pose2d(-58.5,-30.5,0),Math.PI/2)
+                .turnTo(Math.toRadians(-90))
+                .waitSeconds(0.5);
+        TrajectoryActionBuilder Tomid2 = drive.actionBuilder(initialPose)
+                .splineToSplineHeading( new Pose2d(-35,0,3.14159226535897932384626433832795028841),Math.PI*0);
         // actions that need to happen on init; for instance, a claw tightening.
         Actions.runBlocking(gripper.pushUp());
         Actions.runBlocking(slide.back());
         Actions.runBlocking(rot.down());
+        Actions.runBlocking(mission.set());
         //Actions.runBlocking(lift.liftUp());
         /*while (!isStopRequested() && !opModeIsActive()) {
             int position = visionOutputPosition;
@@ -286,18 +360,38 @@ public class RedSideAuto extends LinearOpMode {
 //        Action trajectoryActionChosen5;
 //        Action trajectoryActionChosen6;
         Action Middle;
+        Action Middle2;
         trajectoryActionChosen = tab1.build();
 //        trajectoryActionChosen2 = tab2.build();
 //        trajectoryActionChosen3 = tab3.build();
 //        trajectoryActionChosen4 = tab4.build();
 //        trajectoryActionChosen5 = tab5.build();
 //        trajectoryActionChosen6 = tab6.build();
+        Middle2 = Tomid2.build();
         Middle = Tomid.build();
         Actions.runBlocking(
                 new SequentialAction(
+                        mission.grip(),
+                        new SleepAction(1),
                         Middle,
-                        trajectoryActionChosen
-
+                        lift.liftUp(),
+                        mission.releases(),
+                        lift.liftDown(),
+                        new SleepAction(0.8),
+                        trajectoryActionChosen,
+                        new SleepAction(0.3),
+                        slide.full(),
+                        new SleepAction(0.5),
+                        gripper.pushDown(),
+                        new SleepAction(0.35),
+                        new SleepAction(0.35),
+                        gripper.midUp(),
+                        slide.back(),
+                        new SleepAction(0.5),
+                        rot.up(),
+                        new SleepAction(0.5),
+                        Middle2,
+                        new SleepAction(0.5)
                 )
         );
 
