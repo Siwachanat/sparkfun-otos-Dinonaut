@@ -3,6 +3,7 @@ import androidx.annotation.NonNull;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
@@ -38,7 +39,6 @@ public class RedSideAuto extends LinearOpMode {
             liftL.setDirection(DcMotorSimple.Direction.FORWARD);
             LiftReference = liftL.getCurrentPosition();
         }
-
         public class LiftUp implements Action {
             private boolean initialized = false;
 
@@ -50,17 +50,23 @@ public class RedSideAuto extends LinearOpMode {
                     initialized = true;
                 }
 
-                double posR = liftR.getCurrentPosition();
-                double posL = liftL.getCurrentPosition();
+                int posR = liftR.getCurrentPosition();
+                int posL = liftL.getCurrentPosition();
+
+                telemetry.addData("Position bef", posL);
+                telemetry.update();
+
 
                 packet.put("liftPos", posL);
-                if (posL < LiftReference +1200) {
+                if (posL < LiftReference +900) {
                     return true;
                 } else {
-                    liftR.setPower(0.1);
                     liftL.setPower(0.1);
+                    liftR.setPower(0.1);
                     return false;
                 }
+
+
             }
         }
         public Action liftUp() {
@@ -73,18 +79,18 @@ public class RedSideAuto extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 if (!initialized) {
-                    liftR.setPower(-0.8);
-                    liftL.setPower(0.8);
+                    liftR.setPower(0.8);
+                    liftL.setPower(-0.8);
                     initialized = true;
                 }
 
                 double pos = liftL.getCurrentPosition();
                 packet.put("liftPos", pos);
-                if (pos > 100.0) {
+                if (pos > 200) {
                     return true;
                 } else {
-                    liftR.setPower(0);
-                    liftL.setPower(0);
+                    liftR.setPower(0.10);
+                    liftL.setPower(-0.10);
                     return false;
                 }
             }
@@ -99,12 +105,13 @@ public class RedSideAuto extends LinearOpMode {
         private Servo SL;
         private Servo SR;
         private Servo Smid;
+        private Servo S0;
         public Mission(HardwareMap hardwareMap) {
+            S0 = hardwareMap.get(Servo.class, "S0");
             gripper2 = hardwareMap.get(Servo.class, "Gripper");
             SL = hardwareMap.get(Servo.class, "SL");
             SR = hardwareMap.get(Servo.class, "SR");
             Smid = hardwareMap.get(Servo.class, "Smid");
-            gripper2.setPosition(0.81);
         }
         public class Set implements Action {
             @Override
@@ -112,8 +119,8 @@ public class RedSideAuto extends LinearOpMode {
                 gripper2.setPosition(0.81);
                 sleep(200);
                 Smid.setPosition(0.11);
-                SR.setPosition(0.5);
-                SL.setPosition(0.5);
+                SR.setPosition(0.45);
+                SL.setPosition(0.55);
                 return false;
             }
         }
@@ -123,11 +130,12 @@ public class RedSideAuto extends LinearOpMode {
         public class Grip implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                gripper2.setPosition(0.81);
-                sleep(200);
-                Smid.setPosition(0.58);
-                SR.setPosition(1);
-                SL.setPosition(0);
+                gripper2.setPosition(0.82);
+                S0.setPosition(0.65);
+                sleep(420);
+                Smid.setPosition(0.85);
+                SR.setPosition(0.95);
+                SL.setPosition(0.05);
                 return false;
             }
         }
@@ -148,9 +156,10 @@ public class RedSideAuto extends LinearOpMode {
         public class Mid implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                Smid.setPosition(0.11);
-                SR.setPosition(0.45);
-                SL.setPosition(0.55);
+                Smid.setPosition(0.75);
+                SR.setPosition(0.28);
+                SL.setPosition(0.72);
+                gripper2.setPosition(0.5);
                 return false;
             }
         }
@@ -160,10 +169,10 @@ public class RedSideAuto extends LinearOpMode {
         public class Af implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
+                Smid.setPosition(0.75);
+                SR.setPosition(0.3);
+                SL.setPosition(0.7);
                 gripper2.setPosition(0.5);
-                Smid.setPosition(0.57);
-                SR.setPosition(0.37);
-                SL.setPosition(0.63);
                 return false;
             }
         }
@@ -177,7 +186,6 @@ public class RedSideAuto extends LinearOpMode {
 
         public Gripper(HardwareMap hardwareMap) {
             gripper = hardwareMap.get(Servo.class, "S0");
-            gripper.setPosition(0.65);
         }
 
         public class MidUP implements Action {
@@ -300,41 +308,37 @@ public class RedSideAuto extends LinearOpMode {
 
 
         TrajectoryActionBuilder Tomid = drive.actionBuilder(initialPose)
-                .splineToSplineHeading( new Pose2d(-35,0,3.14159226535897932384626433832795028841),Math.PI*0)
+                .splineToSplineHeading( new Pose2d(-31,0,3.14159226535897932384626433832795028841),Math.PI*0)
                 .waitSeconds(0.5);
 
         TrajectoryActionBuilder tab1 = drive.actionBuilder(initialPose)
                 .setTangent(0)
-                .lineToX(-52)
+                .lineToX(-40)
 //                .waitSeconds(0.15)
 //                .turnTo(Math.toRadians(0))
 
                 .waitSeconds(0.15)
                 .setTangent(0)
-                .strafeTo(new Vector2d(-35,-30))
+                .strafeTo(new Vector2d(-40,-35))
                 .waitSeconds(0.01)
                 .setTangent(0)
                 .lineToX(-14)
                 .waitSeconds(0.15)
                 .setTangent(0)
-                .strafeTo(new Vector2d(-14,-45))
+                .strafeTo(new Vector2d(-13,-45))
                 .waitSeconds(0.01)
-                .lineToX(-52)
+                .lineToX(-52.5)
                 .waitSeconds(0.15)
-                .setTangent(0)
-                .lineToX(-14)
-                .waitSeconds(0.01)
-                .setTangent(0)
-                .strafeTo(new Vector2d(-14,-55))
-                .waitSeconds(0.01)
-                .lineToX(-52)
-                .lineToX(-45)
-                .waitSeconds(0.01)
-                .splineToSplineHeading( new Pose2d(-58.5,-30.5,0),Math.PI/2)
+                .splineToSplineHeading( new Pose2d(-58,-31,0),Math.PI/2)
                 .turnTo(Math.toRadians(-90))
-                .waitSeconds(0.5);
+                .waitSeconds(0.3);
         TrajectoryActionBuilder Tomid2 = drive.actionBuilder(initialPose)
-                .splineToSplineHeading( new Pose2d(-35,0,3.14159226535897932384626433832795028841),Math.PI*0);
+                .splineToSplineHeading( new Pose2d(-32,4,3.14159226535897932384626433832795028841),Math.PI*0);
+        TrajectoryActionBuilder Tomid3 = drive.actionBuilder(initialPose)
+                .splineToSplineHeading( new Pose2d(-32,-4.5,3.14159226535897932384626433832795028841),Math.PI*0);
+        TrajectoryActionBuilder ThirdSample = drive.actionBuilder(initialPose)
+                .splineToSplineHeading( new Pose2d(-56,-30.5,0),Math.PI*2)
+                .turnTo(Math.toRadians(-90));
         // actions that need to happen on init; for instance, a claw tightening.
         Actions.runBlocking(gripper.pushUp());
         Actions.runBlocking(slide.back());
@@ -361,6 +365,8 @@ public class RedSideAuto extends LinearOpMode {
 //        Action trajectoryActionChosen6;
         Action Middle;
         Action Middle2;
+        Action Middle3;
+        Action Third;
         trajectoryActionChosen = tab1.build();
 //        trajectoryActionChosen2 = tab2.build();
 //        trajectoryActionChosen3 = tab3.build();
@@ -369,28 +375,67 @@ public class RedSideAuto extends LinearOpMode {
 //        trajectoryActionChosen6 = tab6.build();
         Middle2 = Tomid2.build();
         Middle = Tomid.build();
+        Middle3 = Tomid3.build();
+        Third = ThirdSample.build();
         Actions.runBlocking(
                 new SequentialAction(
-                        mission.grip(),
-                        new SleepAction(1),
-                        Middle,
+                        new ParallelAction(Middle,
+                                mission.grip()),
+
                         lift.liftUp(),
-                        mission.releases(),
-                        lift.liftDown(),
-                        new SleepAction(0.8),
-                        trajectoryActionChosen,
+                        new ParallelAction(
+                                mission.releases(),
+                                lift.liftDown()),
+                        new ParallelAction(
+                                mission.set(),
+                                trajectoryActionChosen
+                        ),
                         new SleepAction(0.3),
                         slide.full(),
                         new SleepAction(0.5),
                         gripper.pushDown(),
                         new SleepAction(0.35),
+                        gripper.midUp(),
+                        new ParallelAction(
+                                slide.back(),
+                                rot.up(),
+                                new SleepAction(0.5),
+                                mission.mid()),
+                        new SleepAction(0.5),
+                        new ParallelAction(
+                                Middle2,
+                                mission.grip()
+                                ),
+                        lift.liftUp(),
+                        new ParallelAction(
+                                mission.releases(),
+                                lift.liftDown(),
+                                rot.down()),
+
+                        Third,
+                        new SleepAction(0.5),
+                        new ParallelAction(
+                                slide.full()
+                                ),
+                        new SleepAction(0.4),
+                        gripper.pushDown(),
                         new SleepAction(0.35),
                         gripper.midUp(),
-                        slide.back(),
-                        new SleepAction(0.5),
-                        rot.up(),
-                        new SleepAction(0.5),
-                        Middle2,
+                        new SleepAction(0.02),
+                        new ParallelAction(
+                                slide.back(),
+                                new SleepAction(0.5),
+                                rot.up(),
+                                mission.mid()),
+                        new SleepAction(0.35),
+                        new ParallelAction(
+                                Middle3,
+                                mission.grip()
+                        ),
+                        lift.liftUp(),
+                        new ParallelAction(
+                                mission.releases(),
+                                lift.liftDown()),
                         new SleepAction(0.5)
                 )
         );

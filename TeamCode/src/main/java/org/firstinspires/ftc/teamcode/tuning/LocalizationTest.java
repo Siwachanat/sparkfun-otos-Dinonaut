@@ -41,7 +41,7 @@ public class LocalizationTest extends LinearOpMode {
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, new Pose2d(0, 0, 0));
         S0.setPosition(0.65);
         S1.setPosition(0);
-        S5.setPosition(0.5);
+        S5.setPosition(0.6);
 
         waitForStart();
 
@@ -66,9 +66,10 @@ public class LocalizationTest extends LinearOpMode {
             if (gamepad1.left_bumper) {
                 S1.setPosition(0);
                 S0.setPosition(0.7);
+                S5.setPosition(0);
             } else if (gamepad1.right_bumper) {
                 S1.setPosition(0.36);
-                S5.setPosition(0.38);
+                S5.setPosition(0.58);
                 sleep(800);
                 S1.setPosition(0.72);
             } else if (gamepad1.b) {
@@ -89,24 +90,36 @@ public class LocalizationTest extends LinearOpMode {
                 S0.setPosition(0.65);
             } else if (gamepad2.left_bumper) {
                 Gripper.setPosition(0.5);
-                Smid.setPosition(0.05);
+//                Smid.setPosition(0.05);
             }
             if (gamepad2.a){
-                Smid.setPosition(0.57);
-                SR.setPosition(0.37);
-                SL.setPosition(0.63);
+                Smid.setPosition(0.75);
+                SR.setPosition(0.3);
+                SL.setPosition(0.7);
+                Gripper.setPosition(0.5);
             }else if (gamepad2.b){
-                Smid.setPosition(0.11);
                 SR.setPosition(0.45);
                 SL.setPosition(0.55);
             }else if (gamepad2.y){
-                Smid.setPosition(0.58);
-                SR.setPosition(1);
-                SL.setPosition(0);
-                sleep(550);
-           }//else if (gamepad2.x){
-//                Smid.setPosition(0.05);
-//            }
+                Gripper.setPosition(0.82);
+                S0.setPosition(0.65);
+                sleep(420);
+                Smid.setPosition(0.85);
+                SR.setPosition(0.95);
+                SL.setPosition(0.05);
+           }else if (gamepad2.x){
+//                Gripper.setPosition(0.82);
+//                Smid.setPosition(0.85);
+//                SR.setPosition(0.95);
+//                SL.setPosition(0.05);
+                liftR.setPower(-0.7);
+                liftL.setPower(0.7);
+                sleep(500);
+                liftR.setPower(0);
+                liftL.setPower(0);
+                Gripper.setPosition(0.5);
+                Smid.setPosition(0.05);
+           }
             telemetry.addData("x", drive.pose.position.x);
             telemetry.addData("y", drive.pose.position.y);
             telemetry.addData("heading (deg)", Math.toDegrees(drive.pose.heading.toDouble()));
