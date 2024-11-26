@@ -66,7 +66,7 @@ public class BlueSideAuto extends LinearOpMode {
 
 
                 packet.put("liftPos", posL);
-                if (posL < LiftReference +4300) {
+                if (posL < LiftReference +3600) {
                     return true;
                 } else {
                     liftL.setPower(0.1);
@@ -79,6 +79,39 @@ public class BlueSideAuto extends LinearOpMode {
         }
         public Action liftUp() {
             return new LiftUp();
+        }
+        public class LiftUp1 implements Action {
+            private boolean initialized = false;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                if (!initialized) {
+                    liftR.setPower(-0.9);
+                    liftL.setPower(0.9);
+                    initialized = true;
+                }
+
+                int posR = liftR.getCurrentPosition();
+                int posL = liftL.getCurrentPosition();
+
+                telemetry.addData("Position bef", posL);
+                telemetry.update();
+
+
+                packet.put("liftPos", posL);
+                if (posL < LiftReference +1200) {
+                    return true;
+                } else {
+                    liftL.setPower(0.1);
+                    liftR.setPower(0.1);
+                    return false;
+                }
+
+
+            }
+        }
+        public Action liftUp1() {
+            return new LiftUp1();
         }
 
         public class LiftDown implements Action {
@@ -94,17 +127,97 @@ public class BlueSideAuto extends LinearOpMode {
 
                 double pos = liftL.getCurrentPosition();
                 packet.put("liftPos", pos);
-                if (pos > 300) {
+                if (pos > 200) {
                     return true;
                 } else {
-                    liftR.setPower(0);
-                    liftL.setPower(0);
+                    liftR.setPower(0.1);
+                    liftL.setPower(-0.1);
                     return false;
                 }
             }
         }
         public Action liftDown(){
             return new LiftDown();
+        }
+    }
+    public class Mission {
+        private Servo gripper2;
+        private Servo SL;
+        private Servo SR;
+        private Servo Smid;
+        private Servo S0;
+        public Mission(HardwareMap hardwareMap) {
+            S0 = hardwareMap.get(Servo.class, "S0");
+            gripper2 = hardwareMap.get(Servo.class, "Gripper");
+            SL = hardwareMap.get(Servo.class, "SL");
+            SR = hardwareMap.get(Servo.class, "SR");
+            Smid = hardwareMap.get(Servo.class, "Smid");
+        }
+        public class Set implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                gripper2.setPosition(0.81);
+                sleep(200);
+                Smid.setPosition(0.11);
+                SR.setPosition(0.45);
+                SL.setPosition(0.55);
+                return false;
+            }
+        }
+        public Action set() {
+            return new Set();
+        }
+        public class Grip implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                gripper2.setPosition(0.82);
+                S0.setPosition(0.65);
+                sleep(420);
+                Smid.setPosition(0.85);
+                SR.setPosition(0.95);
+                SL.setPosition(0.05);
+                return false;
+            }
+        }
+        public Action grip() {
+            return new Grip();
+        }
+        public class Re implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                gripper2.setPosition(0.5);
+                Smid.setPosition(0.05);
+                return false;
+            }
+        }
+        public Action releases() {
+            return new Re();
+        }
+        public class Mid implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                Smid.setPosition(0.68);
+                SR.setPosition(0.27);
+                SL.setPosition(0.73);
+                gripper2.setPosition(0.51);
+                return false;
+            }
+        }
+        public Action mid() {
+            return new Mid();
+        }
+        public class Af implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                Smid.setPosition(0.75);
+                SR.setPosition(0.29);
+                SL.setPosition(0.71);
+                gripper2.setPosition(0.5);
+                return false;
+            }
+        }
+        public Action af() {
+            return new Af();
         }
     }
 
@@ -220,7 +333,7 @@ public class BlueSideAuto extends LinearOpMode {
     }
     @Override
     public void runOpMode() {
-        Pose2d initialPose = new Pose2d(0, 0, Math.toRadians(0));
+        Pose2d initialPose = new Pose2d(-61.4, -23, Math.toRadians(0));
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, initialPose);
         Gripper gripper = new Gripper(hardwareMap);
         Slide slide = new Slide(hardwareMap);
@@ -229,14 +342,13 @@ public class BlueSideAuto extends LinearOpMode {
 
         // vision here that outputs position
         TrajectoryActionBuilder Tomid = drive.actionBuilder(initialPose)
-                .splineToSplineHeading( new Pose2d(25,-20,0),Math.PI*0)
+                .splineToSplineHeading( new Pose2d(25,-20,3.14145265358979323846264338327),Math.PI*0)
                 .waitSeconds(0.5);
         TrajectoryActionBuilder tab1 = drive.actionBuilder(initialPose)
-                .splineToSplineHeading( new Pose2d(22,23,0),-Math.PI*0)
+                .splineToSplineHeading( new Pose2d(20,23,0),-Math.PI*0)
                 .waitSeconds(0.3);
         TrajectoryActionBuilder tab2 = drive.actionBuilder(initialPose)
-                .splineToSplineHeading( new Pose2d(6,33,0),-Math.PI*0)
-                .turnTo(Math.toRadians(-45))
+                .splineToSplineHeading( new Pose2d(15,28,-Math.PI*2.25),Math.PI*0)
                 .waitSeconds(0.3);
         TrajectoryActionBuilder tab3 = drive.actionBuilder(initialPose)
                 .splineToSplineHeading( new Pose2d(22,33,0),Math.PI*0)
