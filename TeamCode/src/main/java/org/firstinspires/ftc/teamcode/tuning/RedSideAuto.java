@@ -169,6 +169,7 @@ public class RedSideAuto extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 gripper2.setPosition(0.82);
+                sleep(250);
                 S0.setPosition(0.65);
                 sleep(420);
                 Smid.setPosition(0.85);
@@ -375,7 +376,7 @@ public class RedSideAuto extends LinearOpMode {
         //        .waitSeconds(0.5);
 
         TrajectoryActionBuilder Tomid = drive.actionBuilder (initialPose)
-                .splineToSplineHeading( new Pose2d(0,-34,Math.PI*3/2),Math.PI/2);
+                .splineToSplineHeading( new Pose2d(0,-34.5,Math.PI*3/2),Math.PI/2);
 
 
 
@@ -393,14 +394,14 @@ public class RedSideAuto extends LinearOpMode {
                 .build();
 
         TrajectoryActionBuilder Tomid2 = drive.actionBuilder (secondpose)
-                .splineToConstantHeading( new Vector2d(4,-36),Math.PI*0.5);
+                .splineToConstantHeading( new Vector2d(5,-35.7),Math.PI*0.5);
 //                .waitSeconds(1.5)
 //                .splineToConstantHeading( new Vector2d(48,-45),Math.PI*0.5);
 
 
 
         TrajectoryActionBuilder Tomid3 = drive.actionBuilder (secondpose)
-                .splineToConstantHeading( new Vector2d(6,-36),Math.PI*0.5);
+                .splineToConstantHeading( new Vector2d(7,-35.7),Math.PI*0.5);
 //                .waitSeconds(1.5)
 //                .splineToConstantHeading( new Vector2d(48,-45),Math.PI*0.5);
 
@@ -408,7 +409,7 @@ public class RedSideAuto extends LinearOpMode {
 
 
         TrajectoryActionBuilder Tomid4 = drive.actionBuilder (secondpose)
-                .splineToConstantHeading( new Vector2d(8,-36),Math.PI*0.5);
+                .splineToConstantHeading( new Vector2d(-6,-35.7),Math.PI*0.5);
 //                .waitSeconds(1)
 //                .splineToConstantHeading( new Vector2d(48,-45),Math.PI*0.5);
 
@@ -519,15 +520,15 @@ public class RedSideAuto extends LinearOpMode {
                         slide.full(),
                         new SleepAction(0.4),
                         gripper.pushDown(),
-                        new SleepAction(0.45),
+                        new SleepAction(0.5),
                         gripper.midUp(),
                         new SleepAction(0.02),
                         new ParallelAction(
                                 slide.back(),
                                 new SleepAction(0.3),
-                                rot.up(),
-                                new SleepAction(0.05),
-                                mission.mid()),
+                                rot.up()),
+                        new SleepAction(0.3),
+                        mission.mid(),
 
 
                         new SleepAction(0.25),
@@ -551,14 +552,14 @@ public class RedSideAuto extends LinearOpMode {
                         ),
                         new SleepAction(0.4),
                         gripper.pushDown(),
-                        new SleepAction(0.35),
+                        new SleepAction(0.5),
                         gripper.midUp(),
                         new SleepAction(0.02),
                         new ParallelAction(
                                 slide.back(),
-                                rot.up(),
-                                new SleepAction(0.5),
-                                mission.mid()),
+                                rot.up()),
+                        new SleepAction(0.45),
+                        mission.mid(),
                         new SleepAction(0.35),
                         new ParallelAction(
                                 Middle3,
@@ -582,14 +583,14 @@ public class RedSideAuto extends LinearOpMode {
                         ),
                         new SleepAction(0.45),
                         gripper.pushDown(),
-                        new SleepAction(0.35),
+                        new SleepAction(0.5),
                         gripper.midUp(),
                         new SleepAction(0.02),
                         new ParallelAction(
                                 slide.back(),
-                                rot.up(),
-                                new SleepAction(0.4),
-                                mission.mid()),
+                                rot.up()),
+                        new SleepAction(0.35),
+                        mission.mid(),
                         new SleepAction(0.35),
                         new ParallelAction(
                                 Middle4,
