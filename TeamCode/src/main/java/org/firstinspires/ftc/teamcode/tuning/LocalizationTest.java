@@ -98,7 +98,10 @@ public class LocalizationTest extends LinearOpMode {
                 S0.setPosition(0.65);
             } else if (gamepad2.left_bumper) {
                 Gripper.setPosition(0.35);
-//                Smid.setPosition(0.05);
+                Smid.setPosition(0.85);
+                liftR.setPower(0);
+                liftL.setPower(0);
+
             }
             if (gamepad2.a){
                 Smid.setPosition(0.65);
@@ -123,10 +126,7 @@ public class LocalizationTest extends LinearOpMode {
                 liftR.setPower(-0.7);
                 liftL.setPower(0.7);
                 sleep(750);
-                liftR.setPower(0);
-                liftL.setPower(0);
-                Gripper.setPosition(0.35);
-                Smid.setPosition(0.85);
+
 
            }
             telemetry.addData("x", drive.pose.position.x);

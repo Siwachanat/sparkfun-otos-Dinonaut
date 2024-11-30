@@ -394,7 +394,7 @@ public class RedSideAuto extends LinearOpMode {
                 .splineToConstantHeading(new Vector2d(38,-13),Math.PI/3)//1
                 .splineToConstantHeading(new Vector2d(46,-50),Math.PI*3/2)
                 .splineToConstantHeading(new Vector2d(46,-12.5),Math.PI/3)//2
-                .splineToConstantHeading(new Vector2d(57,-50),Math.PI*3/2)
+                .splineToConstantHeading(new Vector2d(56,-50),Math.PI*3/2)
                 .splineToSplineHeading(new Pose2d(44,-47,Math.PI*3/2),Math.PI*0.15)
                 .waitSeconds(0.2)
 
@@ -403,14 +403,14 @@ public class RedSideAuto extends LinearOpMode {
                 .build();
 
         TrajectoryActionBuilder Tomid2 = drive.actionBuilder (secondpose)
-                .splineToConstantHeading( new Vector2d(5,-35.7),Math.PI*0.5 );
+                .splineToConstantHeading( new Vector2d(5,-34.78),Math.PI*0.5 );
 //                .waitSeconds(1.5)
 //                .splineToConstantHeading( new Vector2d(48,-45),Math.PI*0.5);
 
 
 
         TrajectoryActionBuilder Tomid3 = drive.actionBuilder (secondpose)
-                .splineToConstantHeading( new Vector2d(7,-35.7),Math.PI*0.5);
+                .splineToConstantHeading( new Vector2d(7,-34.56),Math.PI*0.5);
 //                .waitSeconds(1.5)
 //                .splineToConstantHeading( new Vector2d(48,-45),Math.PI*0.5);
 
@@ -418,7 +418,7 @@ public class RedSideAuto extends LinearOpMode {
 
 
         TrajectoryActionBuilder Tomid4 = drive.actionBuilder (secondpose)
-                .splineToConstantHeading( new Vector2d(9,-35.7),Math.PI*0.5);
+                .splineToConstantHeading( new Vector2d(-4,-34.56),Math.PI*0.5);
 //                .waitSeconds(1)
 //                .splineToConstantHeading( new Vector2d(48,-45),Math.PI*0.5);
 
@@ -427,18 +427,18 @@ public class RedSideAuto extends LinearOpMode {
 
 
         TrajectoryActionBuilder Tobeno1 = drive.actionBuilder (benopos1)
-                .splineToConstantHeading( new Vector2d(44,-47),Math.PI*1.5)
+                .splineToConstantHeading( new Vector2d(44,-44.25),Math.PI*1.5)
                 .waitSeconds(0.3);
 
 
 
         TrajectoryActionBuilder Tobeno2 = drive.actionBuilder (benopos2)
-                .splineToConstantHeading( new Vector2d(44,-47),Math.PI*1.5)
+                .splineToConstantHeading( new Vector2d(44,-44.25),Math.PI*1.5)
                 .waitSeconds(0.3);
 
 
         TrajectoryActionBuilder Tobeno3 = drive.actionBuilder (benopos3)
-                .splineToConstantHeading( new Vector2d(44,-47),Math.PI*1.5)
+                .splineToConstantHeading( new Vector2d(44,-44.25),Math.PI*1.5)
                 .waitSeconds(0.3);
 
 
@@ -453,9 +453,8 @@ public class RedSideAuto extends LinearOpMode {
                 .splineToSplineHeading( new Pose2d(-9,-55,0),Math.PI*2)
 //                .waitSeconds(0.01).splineToConstantHeading(new Vector2d(-52.5,-45),Math.PI/2)
                 .lineToX(-52.5)
-                .waitSeconds(0.15)
-                .splineToSplineHeading( new Pose2d(-58,-31,-Math.PI/2),Math.PI/2)
-                .waitSeconds(0.25);
+                .waitSeconds(0.1225)
+                .splineToSplineHeading( new Pose2d(-58,-31,-Math.PI/2),Math.PI/2);
         // actions that need to happen on init; for instance, a claw tightening.
         Actions.runBlocking(gripper.pushUp());
         Actions.runBlocking(slide.back());
@@ -518,8 +517,10 @@ public class RedSideAuto extends LinearOpMode {
 
                         new ParallelAction(
                                 gripper.pushUp(),//Deposit Gripper
-                                mission.releases(),//Top Arm Gripper
-                                lift.liftDown()),// release gripper for hang
+                                lift.liftDown(),
+                                new SleepAction(0.35),
+                                mission.releases()),// release gripper for hang
+
                         new ParallelAction(
                                 gripper.pushUp(),
                                 mission.set(),//Setting Gripper to Ready State
@@ -528,20 +529,20 @@ public class RedSideAuto extends LinearOpMode {
                         //----------------------------------------------------------------
                         slide.full(),//Extend Lower slide for collect second speciment
 
-                        new SleepAction(0.3),
+                        new SleepAction(0.38),
                         gripper.pushDown(),
-                        new SleepAction(0.35),
+                        new SleepAction(0.38),
                         gripper.midUp(),
                         new SleepAction(0.02),
 //
                         new ParallelAction(
                                 slide.back(),
-                                new SleepAction(0.3),
+                                new SleepAction(0.2),
                                 rot.up()),
 
 
 
-                        new SleepAction(0.45),
+                        new SleepAction(0.356),
                         mission.mid(),
                         new SleepAction(0.25),
 
@@ -557,7 +558,7 @@ public class RedSideAuto extends LinearOpMode {
                                 rot.down(),
                                 lift.liftDown(),
                                 gripper.pushUp()),
-                        new SleepAction(0.3),
+                        new SleepAction(0.26),
                         Benopos1,
                         //back to beno for 3 speciment
 
@@ -565,9 +566,9 @@ public class RedSideAuto extends LinearOpMode {
                         //-----------------------------------------------------------------
                         slide.full(),//Extend Lower slide for collect third speciment
 
-                        new SleepAction(0.4),
+                        new SleepAction(0.38),
                         gripper.pushDown(),
-                        new SleepAction(0.5),
+                        new SleepAction(0.4),
                         gripper.midUp(),
                         new SleepAction(0.02),
 //
@@ -596,7 +597,7 @@ public class RedSideAuto extends LinearOpMode {
                         //-------------------------------------------------------------------
                         slide.full(),//slide for collect forth speciment
 
-                        new SleepAction(0.4),
+                        new SleepAction(0.38),
                         gripper.pushDown(),
                         gripper.pushDown(),
                         new SleepAction(0.4),
@@ -607,7 +608,7 @@ public class RedSideAuto extends LinearOpMode {
                                 slide.back(),
                                 new SleepAction(0.3),
                                 rot.up()),
-                        new SleepAction(0.45),
+                        new SleepAction(0.4),
                         mission.mid(),
                         new SleepAction(0.25),
 
@@ -622,10 +623,10 @@ public class RedSideAuto extends LinearOpMode {
                                 mission.releases(),
                                 rot.down(),
                                 lift.liftDown()),
-                        new SleepAction(0.3),
-                        Benopos3,
-                        slide.full(),
-                        new SleepAction(0.5)
+                        new SleepAction(0.3)
+//                        Benopos3,
+//                        slide.full(),
+//                        new SleepAction(0.5)
                 )
         );
 
