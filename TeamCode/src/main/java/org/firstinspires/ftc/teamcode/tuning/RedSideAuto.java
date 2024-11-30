@@ -11,7 +11,9 @@ import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Trajectory;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
+import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.acmerobotics.roadrunner.VelConstraint;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -154,9 +156,11 @@ public class RedSideAuto extends LinearOpMode {
         public class Set implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                gripper2.setPosition(0.81);
+                //Set Grip to Position
+                gripper2.setPosition(0.82);
                 sleep(200);
                 Smid.setPosition(0.1);
+                //Rotate Arm to 2nd level chamber
                 SR.setPosition(0.7);
                 SL.setPosition(0.3);
                 return false;
@@ -168,11 +172,11 @@ public class RedSideAuto extends LinearOpMode {
         public class Grip implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                gripper2.setPosition(0.82);
-                sleep(250);
+                sleep(100);
+                gripper2.setPosition(0.835);
+                sleep(350);
                 S0.setPosition(0.65);
-                sleep(420);
-                Smid.setPosition(0.85);
+                Smid.setPosition(0.4);
                 SR.setPosition(0.05);
                 SL.setPosition(0.95);
                 return false;
@@ -185,7 +189,6 @@ public class RedSideAuto extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 gripper2.setPosition(0.5);
-                Smid.setPosition(0.05);
                 return false;
             }
         }
@@ -195,6 +198,8 @@ public class RedSideAuto extends LinearOpMode {
         public class Mid implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
+                gripper2.setPosition(0.2);
+
                 Smid.setPosition(0.65);
                 SR.setPosition(0.91);
                 SL.setPosition(0.09);
@@ -357,7 +362,7 @@ public class RedSideAuto extends LinearOpMode {
     @Override
     public void runOpMode() {
         Pose2d initialPose = new Pose2d(23, -63, Math.toRadians(0));
-        Pose2d secondpose = new Pose2d(48, -45, Math.PI*3/2);
+        Pose2d secondpose = new Pose2d(40, -45, Math.PI*3/2);
 
         Pose2d benopos1 =  new Pose2d(2,-34,Math.PI*3/2);
         Pose2d benopos2 =  new Pose2d(4,-34,Math.PI*3/2);
@@ -376,7 +381,11 @@ public class RedSideAuto extends LinearOpMode {
         //        .waitSeconds(0.5);
 
         TrajectoryActionBuilder Tomid = drive.actionBuilder (initialPose)
-                .splineToSplineHeading( new Pose2d(0,-34.5,Math.PI*3/2),Math.PI/2);
+                .splineToLinearHeading( new Pose2d(0,-34.5,Math.PI*3/2),Math.PI/2);
+
+
+
+
 
 
 
@@ -385,16 +394,16 @@ public class RedSideAuto extends LinearOpMode {
                 .splineToConstantHeading(new Vector2d(38,-13),Math.PI/3)//1
                 .splineToConstantHeading(new Vector2d(46,-50),Math.PI*3/2)
                 .splineToConstantHeading(new Vector2d(46,-12.5),Math.PI/3)//2
-                .splineToConstantHeading(new Vector2d(58,-50),Math.PI*3/2)
-                .splineToSplineHeading(new Pose2d(48,-45,Math.PI*3/2),Math.PI*0.15)
-                .waitSeconds(0.4)
+                .splineToConstantHeading(new Vector2d(57,-50),Math.PI*3/2)
+                .splineToSplineHeading(new Pose2d(44,-47,Math.PI*3/2),Math.PI*0.15)
+                .waitSeconds(0.2)
 
 
 
                 .build();
 
         TrajectoryActionBuilder Tomid2 = drive.actionBuilder (secondpose)
-                .splineToConstantHeading( new Vector2d(5,-35.7),Math.PI*0.5);
+                .splineToConstantHeading( new Vector2d(5,-35.7),Math.PI*0.5 );
 //                .waitSeconds(1.5)
 //                .splineToConstantHeading( new Vector2d(48,-45),Math.PI*0.5);
 
@@ -409,7 +418,7 @@ public class RedSideAuto extends LinearOpMode {
 
 
         TrajectoryActionBuilder Tomid4 = drive.actionBuilder (secondpose)
-                .splineToConstantHeading( new Vector2d(-6,-35.7),Math.PI*0.5);
+                .splineToConstantHeading( new Vector2d(9,-35.7),Math.PI*0.5);
 //                .waitSeconds(1)
 //                .splineToConstantHeading( new Vector2d(48,-45),Math.PI*0.5);
 
@@ -418,19 +427,19 @@ public class RedSideAuto extends LinearOpMode {
 
 
         TrajectoryActionBuilder Tobeno1 = drive.actionBuilder (benopos1)
-                .splineToConstantHeading( new Vector2d(48,-45),Math.PI*1.5)
+                .splineToConstantHeading( new Vector2d(44,-47),Math.PI*1.5)
                 .waitSeconds(0.3);
 
 
 
         TrajectoryActionBuilder Tobeno2 = drive.actionBuilder (benopos2)
-                .splineToConstantHeading( new Vector2d(48,-45),Math.PI*1.5)
+                .splineToConstantHeading( new Vector2d(44,-47),Math.PI*1.5)
                 .waitSeconds(0.3);
 
 
         TrajectoryActionBuilder Tobeno3 = drive.actionBuilder (benopos3)
-                .splineToConstantHeading( new Vector2d(48,-45),Math.PI*1.5)
-                .waitSeconds(0.7);
+                .splineToConstantHeading( new Vector2d(44,-47),Math.PI*1.5)
+                .waitSeconds(0.3);
 
 
 
@@ -465,6 +474,7 @@ public class RedSideAuto extends LinearOpMode {
 
         if (isStopRequested()) return;
 
+        //Build Trajectory and Action
         Action trajectoryActionChosen;
         Action trajectoryActionChosen2;
         Action trajectoryActionChosen3;
@@ -495,113 +505,126 @@ public class RedSideAuto extends LinearOpMode {
         Benopos3 = Tobeno3.build();
 
 
-
-
         Third = ThirdSample.build();
+
+
         Actions.runBlocking(
                 new SequentialAction(
                         new ParallelAction(
-                                Middle,//first speciment
-                                mission.grip()),
+                                mission.grip(), //Set Top gripper Ready to ng speciment
+                                lift.liftUp2(),// faster place specimen Lift arm for hang level
+                                Middle//first speciment Trjectory Moving Path
+                                ),
 
-                        lift.liftUp2(),
-                        new SleepAction(0.25),
+                        new ParallelAction(
+                                gripper.pushUp(),//Deposit Gripper
+                                mission.releases(),//Top Arm Gripper
+                                lift.liftDown()),// release gripper for hang
                         new ParallelAction(
                                 gripper.pushUp(),
-                                mission.releases(),
-                                lift.liftDown()),// release gripper for hang
+                                mission.set(),//Setting Gripper to Ready State
+                                tab1),
 
-                        new ParallelAction(
-                                mission.set(),
-                                tab1// collect sample
-                        ),
+                        //----------------------------------------------------------------
+                        slide.full(),//Extend Lower slide for collect second speciment
 
-                        gripper.pushUp(),
-                        slide.full(),
-                        new SleepAction(0.4),
+                        new SleepAction(0.3),
                         gripper.pushDown(),
-                        new SleepAction(0.5),
+                        new SleepAction(0.35),
                         gripper.midUp(),
                         new SleepAction(0.02),
+//
                         new ParallelAction(
                                 slide.back(),
                                 new SleepAction(0.3),
                                 rot.up()),
-                        new SleepAction(0.3),
+
+
+
+                        new SleepAction(0.45),
                         mission.mid(),
-
-
                         new SleepAction(0.25),
+
+
                         new ParallelAction(
-                                Middle2,//hang second speciment
-                                mission.grip()
+                                mission.grip(),
+                                lift.liftUp2(),// faster place specimen
+                                Middle2//hang third speciment
                         ),
-                        lift.liftUp2(),
+
                         new ParallelAction(
                                 mission.releases(),
+                                rot.down(),
                                 lift.liftDown(),
-                                rot.down()),
-                        new ParallelAction(
-                                mission.releases()),
-                        Benopos1,// back to collect speciment
+                                gripper.pushUp()),
+                        new SleepAction(0.3),
+                        Benopos1,
+                        //back to beno for 3 speciment
 
 
-                        new ParallelAction(
-                                gripper.pushUp(),
-                                slide.full()
-                        ),
+                        //-----------------------------------------------------------------
+                        slide.full(),//Extend Lower slide for collect third speciment
+
                         new SleepAction(0.4),
                         gripper.pushDown(),
                         new SleepAction(0.5),
                         gripper.midUp(),
                         new SleepAction(0.02),
+//
                         new ParallelAction(
                                 slide.back(),
+                                new SleepAction(0.3),
                                 rot.up()),
-                        new SleepAction(0.45),
-                        mission.mid(),
-                        new SleepAction(0.35),
-                        new ParallelAction(
-                                Middle3,
-                                mission.grip()
 
+                        new SleepAction(0.2),
+                        mission.mid(),
+                        new SleepAction(0.25),
+                        new ParallelAction(
+                                mission.grip(),
+                                lift.liftUp2(),// faster place specimen
+                                Middle3//hang third speciment
                         ),
-                        lift.liftUp(),
+
                         new ParallelAction(
                                 mission.releases(),
                                 rot.down(),
                                 lift.liftDown()),
-                        new ParallelAction(
-                                mission.releases()),
-                        Benopos2,
-                        //trajectoryActionChosen3,
+                        new SleepAction(0.3),
+                                Benopos2,
+                                gripper.pushUp(),//back to beno for 3 speciment
+
+                        //-------------------------------------------------------------------
+                        slide.full(),//slide for collect forth speciment
 
                         new SleepAction(0.4),
-                        new ParallelAction(
-                                gripper.pushUp(),
-                                slide.full()
-                        ),
-                        new SleepAction(0.45),
                         gripper.pushDown(),
-                        new SleepAction(0.5),
+                        gripper.pushDown(),
+                        new SleepAction(0.4),
                         gripper.midUp(),
-                        new SleepAction(0.02),
+                        new SleepAction(0.15),
+//
                         new ParallelAction(
                                 slide.back(),
+                                new SleepAction(0.3),
                                 rot.up()),
-                        new SleepAction(0.35),
+                        new SleepAction(0.45),
                         mission.mid(),
-                        new SleepAction(0.35),
+                        new SleepAction(0.25),
+
+
                         new ParallelAction(
-                                Middle4,
-                                mission.grip()
+                                mission.grip(),
+                                lift.liftUp2(),// faster place specimen
+                                Middle4//hang forth speciment
                         ),
-                        lift.liftUp(),
+
                         new ParallelAction(
                                 mission.releases(),
+                                rot.down(),
                                 lift.liftDown()),
+                        new SleepAction(0.3),
                         Benopos3,
-
+                        slide.full(),
                         new SleepAction(0.5)
                 )
         );
