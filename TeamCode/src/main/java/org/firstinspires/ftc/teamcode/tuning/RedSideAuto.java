@@ -459,7 +459,7 @@ public class RedSideAuto extends LinearOpMode {
         Actions.runBlocking(gripper.pushUp());
         Actions.runBlocking(slide.back());
         Actions.runBlocking(rot.down());
-        Actions.runBlocking(mission.set());
+        Actions.runBlocking(mission.mid());
         //Actions.runBlocking(lift.liftUp());
         /*while (!isStopRequested() && !opModeIsActive()) {
             int position = visionOutputPosition;
