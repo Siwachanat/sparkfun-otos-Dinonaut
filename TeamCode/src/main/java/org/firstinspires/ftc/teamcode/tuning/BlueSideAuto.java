@@ -66,7 +66,7 @@ public class BlueSideAuto extends LinearOpMode {
 
 
                 packet.put("liftPos", posL);
-                if (posL < LiftReference +3600) {
+                if (posL < LiftReference +3800) {
                     return true;
                 } else {
                     liftL.setPower(0.1);
@@ -127,11 +127,11 @@ public class BlueSideAuto extends LinearOpMode {
 
                 double pos = liftL.getCurrentPosition();
                 packet.put("liftPos", pos);
-                if (pos > 200) {
+                if (pos > 1300) {
                     return true;
                 } else {
-                    liftR.setPower(0.1);
-                    liftL.setPower(-0.1);
+                    liftR.setPower(0.7);
+                    liftL.setPower(-0.7);
                     return false;
                 }
             }
@@ -151,16 +151,18 @@ public class BlueSideAuto extends LinearOpMode {
             gripper2 = hardwareMap.get(Servo.class, "Gripper");
             SL = hardwareMap.get(Servo.class, "SL");
             SR = hardwareMap.get(Servo.class, "SR");
-            Smid = hardwareMap.get(Servo.class, "Smid");
+            Smid = hardwareMap.get(Servo.class, "midGrip");
         }
         public class Set implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                gripper2.setPosition(0.81);
+                //Set Grip to Position
+                gripper2.setPosition(0.82);
                 sleep(200);
-                Smid.setPosition(0.11);
-                SR.setPosition(0.45);
-                SL.setPosition(0.55);
+                Smid.setPosition(0.1);
+                //Rotate Arm to 2nd level chamber
+                SR.setPosition(0.47);
+                SL.setPosition(0.53);
                 return false;
             }
         }
@@ -170,12 +172,13 @@ public class BlueSideAuto extends LinearOpMode {
         public class Grip implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                gripper2.setPosition(0.82);
+                sleep(100);
+                gripper2.setPosition(0.835);
+                sleep(350);
                 S0.setPosition(0.65);
-                sleep(420);
-                Smid.setPosition(0.85);
-                SR.setPosition(0.95);
-                SL.setPosition(0.05);
+                Smid.setPosition(0.4);
+                SR.setPosition(0.85);
+                SL.setPosition(0.15);
                 return false;
             }
         }
@@ -186,7 +189,6 @@ public class BlueSideAuto extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 gripper2.setPosition(0.5);
-                Smid.setPosition(0.05);
                 return false;
             }
         }
@@ -196,49 +198,32 @@ public class BlueSideAuto extends LinearOpMode {
         public class Mid implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                Smid.setPosition(0.68);
-                SR.setPosition(0.27);
-                SL.setPosition(0.73);
-                gripper2.setPosition(0.51);
+                gripper2.setPosition(0.2);
+
+                Smid.setPosition(0.65);
+                SR.setPosition(0.335);
+                SL.setPosition(0.665);
+                gripper2.setPosition(0.2);
                 return false;
             }
         }
         public Action mid() {
             return new Mid();
         }
-        public class Af implements Action {
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                Smid.setPosition(0.75);
-                SR.setPosition(0.29);
-                SL.setPosition(0.71);
-                gripper2.setPosition(0.5);
-                return false;
-            }
-        }
-        public Action af() {
-            return new Af();
-        }
+
     }
-
-
-
-
-
-
 
     public class Gripper {
         private Servo gripper;
 
         public Gripper(HardwareMap hardwareMap) {
             gripper = hardwareMap.get(Servo.class, "S0");
-            gripper.setPosition(0.65);
         }
 
         public class MidUP implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                gripper.setPosition(0.5);
+                gripper.setPosition(0.76);
                 return false;
             }
         }
@@ -249,7 +234,7 @@ public class BlueSideAuto extends LinearOpMode {
         public class PushDown implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                gripper.setPosition(0.1);
+                gripper.setPosition(1);
                 return false;
             }
         }
@@ -259,7 +244,7 @@ public class BlueSideAuto extends LinearOpMode {
         public class PushUp implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                gripper.setPosition(0.65);
+                gripper.setPosition(0.59);
                 return false;
             }
         }
@@ -267,6 +252,36 @@ public class BlueSideAuto extends LinearOpMode {
             return new PushUp();
         }
     }
+
+    public class GripperRot {
+        private Servo gripperrot;
+
+        public GripperRot(HardwareMap hardwareMap) {
+            gripperrot = hardwareMap.get(Servo.class, "S4");
+        }
+
+        public class Zero implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                gripperrot.setPosition(0.07);
+                return false;
+            }
+        }
+        public Action zero() {
+            return new Zero();
+        }
+        public class Ninety implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                gripperrot.setPosition(0.5);
+                return false;
+            }
+        }
+        public Action ninety() {
+            return new Ninety();
+        }
+    }
+
     public class Slide {
         private Servo slide;
 
@@ -290,7 +305,7 @@ public class BlueSideAuto extends LinearOpMode {
         public class Back implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                slide.setPosition(0.5);
+                slide.setPosition(0.48);
                 return false;
             }
         }
@@ -304,13 +319,13 @@ public class BlueSideAuto extends LinearOpMode {
 
         public Rot(HardwareMap hardwareMap) {
             rotate = hardwareMap.get(Servo.class, "S1");
-            rotate.setPosition(0);
+            rotate.setPosition(0.15);
         }
 
         public class Down implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                rotate.setPosition(0);
+                rotate.setPosition(0.15);
                 return false;
             }
         }
@@ -322,7 +337,7 @@ public class BlueSideAuto extends LinearOpMode {
         public class Up implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                rotate.setPosition(0.82);
+                rotate.setPosition(0.88);
                 return false;
             }
         }
@@ -330,111 +345,137 @@ public class BlueSideAuto extends LinearOpMode {
         public Action up() {
             return new Up();
         }
+        public class Mid implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                rotate.setPosition(0.5);
+                return false;
+            }
+        }
+
+        public Action mid() {
+            return new Mid();
+        }
     }
+
     @Override
     public void runOpMode() {
-        Pose2d initialPose = new Pose2d(-61.4, -23, Math.toRadians(0));
+        Pose2d initialPose = new Pose2d(-23, -61.5, Math.toRadians(0));
+        Pose2d second = new Pose2d(-46,-45,Math.PI/4);
+        Pose2d second2 = new Pose2d(-46,-43,Math.PI/2);
+        Pose2d Third = new Pose2d(-58,-45,Math.PI/2);
+        Pose2d Forth = new Pose2d(-50,-24,Math.PI+0);
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, initialPose);
         Gripper gripper = new Gripper(hardwareMap);
         Slide slide = new Slide(hardwareMap);
         Rot rot = new Rot(hardwareMap);
         Lift lift = new Lift(hardwareMap);
-
+        Mission mission = new Mission(hardwareMap);
         // vision here that outputs position
-        TrajectoryActionBuilder Tomid = drive.actionBuilder(initialPose)
-                .splineToSplineHeading( new Pose2d(25,-20,3.14145265358979323846264338327),Math.PI*0)
-                .waitSeconds(0.5);
-        TrajectoryActionBuilder tab1 = drive.actionBuilder(initialPose)
-                .splineToSplineHeading( new Pose2d(20,23,0),-Math.PI*0)
-                .waitSeconds(0.3);
-        TrajectoryActionBuilder tab2 = drive.actionBuilder(initialPose)
-                .splineToSplineHeading( new Pose2d(15,28,-Math.PI*2.25),Math.PI*0)
-                .waitSeconds(0.3);
-        TrajectoryActionBuilder tab3 = drive.actionBuilder(initialPose)
-                .splineToSplineHeading( new Pose2d(22,33,0),Math.PI*0)
-                .waitSeconds(0.5);
-        TrajectoryActionBuilder tab4 = drive.actionBuilder(initialPose);
-        TrajectoryActionBuilder tab5 = drive.actionBuilder(initialPose);
-        TrajectoryActionBuilder tab6 = drive.actionBuilder(initialPose);
+        TrajectoryActionBuilder Putspec1 = drive.actionBuilder(initialPose)
+                .splineToLinearHeading(new Pose2d(-48,-49.5,Math.PI/4),-Math.PI*2);
 
 
-        // actions that need to happen on init; for instance, a claw tightening.
+        TrajectoryActionBuilder firstspec1 = drive.actionBuilder(second)
+                .turn(Math.PI/4)
+                .lineToY(-43);
 
-        //Actions.runBlocking(new ParallelAction(
-        //        gripper.pushUp(),
-        //        slide.back()
-        //));
+        TrajectoryActionBuilder firstspec2 = drive.actionBuilder(second2)
+                .turn(-Math.PI/4)
+                .waitSeconds(2);//turn to put in to the basket
+
+        TrajectoryActionBuilder tab3 = drive.actionBuilder(second)
+                .splineToLinearHeading(new Pose2d(-55,-43,Math.PI/2),Math.PI*2)
+                .waitSeconds(2);//go get second spec
+
+        TrajectoryActionBuilder tab4 = drive.actionBuilder(Third)
+                .splineToLinearHeading(new Pose2d(-45,-41,Math.PI/4),Math.PI*2)
+                .waitSeconds(2);//return to basket
+
+        TrajectoryActionBuilder tab5 = drive.actionBuilder(second)
+                .splineToLinearHeading(new Pose2d(-50,-27,Math.PI+0),Math.PI*2)
+                .waitSeconds(2);//go to collect third spec
+        TrajectoryActionBuilder tab6 = drive.actionBuilder(Forth)
+                .splineToLinearHeading(new Pose2d(-45,-45,Math.PI/4),Math.PI*2)
+                .waitSeconds(2);//return to basket
+        TrajectoryActionBuilder Park = drive.actionBuilder(second)
+                .splineToLinearHeading(new Pose2d(-25,-0,Math.PI+0),Math.PI*2)
+                .waitSeconds(2);//park
+
+
+
+
+
+
         Actions.runBlocking(gripper.pushUp());
         Actions.runBlocking(slide.back());
         Actions.runBlocking(rot.down());
-        /*while (!isStopRequested() && !opModeIsActive()) {
-            int position = visionOutputPosition;
-            telemetry.addData("Position during Init", position);
-            telemetry.update();
-        }
+        Actions.runBlocking(mission.set());
 
-         */
+
+
+        Action T0pos1;
+        Action T0pos2;
+        Action T0pos3;
+        Action T0pos4;
+        Action T0pos5;
+        Action T0pos6;
+        Action T0pos7;
+        Action T0pos8;
+        Action T0pos9;
+
+        T0pos1 = Putspec1.build();
+        T0pos2 = firstspec1.build();
+        T0pos3 = firstspec2.build();
+        T0pos4 = tab3 .build();
+        T0pos5 = tab4.build();
+        T0pos6 = tab5.build();
+        T0pos7 = tab6.build();
+        T0pos8 = Park.build();
+        T0pos9 = Putspec1.build();
+
 
         waitForStart();
 
         if (isStopRequested()) return;
 
-        Action trajectoryActionChosen;
-        Action trajectoryActionChosen2;
-        Action trajectoryActionChosen3;
-        Action trajectoryActionChosen4;
-        Action trajectoryActionChosen5;
-        Action trajectoryActionChosen6;
-        Action Middle;
-        trajectoryActionChosen = tab1.build();
-        trajectoryActionChosen2 = tab2.build();
-        trajectoryActionChosen3 = tab3.build();
-        trajectoryActionChosen4 = tab4.build();
-        trajectoryActionChosen5 = tab5.build();
-        trajectoryActionChosen6 = tab6.build();
-        Middle = Tomid.build();
+
         Actions.runBlocking(
                 new SequentialAction(
-                        Middle,
-                        trajectoryActionChosen,
-                        //lift.liftUp(),
-                        slide.full(),
-                        new SleepAction(0.7),
-                        gripper.pushDown(),
-                        new SleepAction(0.5),
-                        gripper.midUp(),
-                        new SleepAction(0.3),
-                        rot.up(),
-                        slide.back(),
+                        T0pos1,
+                        new ParallelAction(
+                                lift.liftUp()),
                         new SleepAction(1),
-                        gripper.pushUp(),
-                        new SleepAction(0.3),
-                        trajectoryActionChosen2,
-                        lift.liftUp(),
-                        new SleepAction(3)
+                        mission.grip(),
+                        new SleepAction(1),
+                        mission.releases(),
+                        new SleepAction(1),
+
+                        new ParallelAction(
+                                mission.set()),
+
+                        new SleepAction(1),
+                        lift.liftDown(),
+                        new SleepAction(3),
+                        new ParallelAction(
+                                T0pos2
+                        ),
+
+                        T0pos3,
+                        T0pos4,
+                        T0pos5,
+                        T0pos6,
+                        T0pos7,
+                        T0pos8
+
                 )
-//                new SequentialAction(
-//                        Middle,
-//                        trajectoryActionChosen,
-//                        //lift.liftUp(),
-//                        slide.full(),
-//                        new SleepAction(0.7),
-//                        gripper.pushDown(),
-//                        new SleepAction(0.5),
-//                        gripper.midUp(),
-//                        new SleepAction(0.3),
-//                        rot.up(),
-//                        slide.back(),
-//                        new SleepAction(1),
-//                        gripper.pushUp(),
-//                        new SleepAction(0.3),
-//                        trajectoryActionChosen2,
-//                        lift.liftUp(),
-//                        new SleepAction(3)
+
 //                )
         );
 
 
 
     }
+
+
 }
