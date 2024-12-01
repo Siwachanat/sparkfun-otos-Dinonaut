@@ -161,8 +161,8 @@ public class RedSideAuto extends LinearOpMode {
                 sleep(200);
                 Smid.setPosition(0.1);
                 //Rotate Arm to 2nd level chamber
-                SR.setPosition(0.7);
-                SL.setPosition(0.3);
+                SR.setPosition(0.5);
+                SL.setPosition(0.5);
                 return false;
             }
         }
@@ -177,8 +177,8 @@ public class RedSideAuto extends LinearOpMode {
                 sleep(350);
                 S0.setPosition(0.65);
                 Smid.setPosition(0.4);
-                SR.setPosition(0.05);
-                SL.setPosition(0.95);
+                SR.setPosition(0.5+0.375);
+                SL.setPosition(0.5-0.375);
                 return false;
             }
         }
