@@ -161,8 +161,8 @@ public class RedSideAuto extends LinearOpMode {
                 sleep(200);
                 Smid.setPosition(0.1);
                 //Rotate Arm to 2nd level chamber
-                SR.setPosition(0.5);
-                SL.setPosition(0.5);
+                SR.setPosition(0.47);
+                SL.setPosition(0.53);
                 return false;
             }
         }
@@ -177,8 +177,8 @@ public class RedSideAuto extends LinearOpMode {
                 sleep(350);
                 S0.setPosition(0.65);
                 Smid.setPosition(0.4);
-                SR.setPosition(0.5+0.375);
-                SL.setPosition(0.5-0.375);
+                SR.setPosition(1);
+                SL.setPosition(0);
                 return false;
             }
         }
@@ -201,8 +201,8 @@ public class RedSideAuto extends LinearOpMode {
                 gripper2.setPosition(0.2);
 
                 Smid.setPosition(0.65);
-                SR.setPosition(0.91);
-                SL.setPosition(0.09);
+                SR.setPosition(0.335);
+                SL.setPosition(0.665);
                 gripper2.setPosition(0.2);
                 return false;
             }
@@ -381,7 +381,7 @@ public class RedSideAuto extends LinearOpMode {
         //        .waitSeconds(0.5);
 
         TrajectoryActionBuilder Tomid = drive.actionBuilder (initialPose)
-                .splineToLinearHeading( new Pose2d(0,-34.5,Math.PI*3/2),Math.PI/2);
+                .splineToLinearHeading( new Pose2d(0,-33.5,Math.PI*3/2),Math.PI/2);
 
 
 
@@ -392,9 +392,9 @@ public class RedSideAuto extends LinearOpMode {
         Action tab1 = Tomid.endTrajectory().fresh()
                 .splineToSplineHeading(new Pose2d(24,-38,Math.PI*0),Math.PI*0.15)
                 .splineToConstantHeading(new Vector2d(38,-13),Math.PI/3)//1
-                .splineToConstantHeading(new Vector2d(46,-50),Math.PI*3/2)
+                .splineToConstantHeading(new Vector2d(45,-50),Math.PI*3/2)
                 .splineToConstantHeading(new Vector2d(46,-12.5),Math.PI/3)//2
-                .splineToConstantHeading(new Vector2d(56,-50),Math.PI*3/2)
+                .splineToConstantHeading(new Vector2d(55,-50),Math.PI*3/2)
                 .splineToSplineHeading(new Pose2d(44,-47,Math.PI*3/2),Math.PI*0.15)
                 .waitSeconds(0.2)
 
@@ -459,7 +459,7 @@ public class RedSideAuto extends LinearOpMode {
         Actions.runBlocking(gripper.pushUp());
         Actions.runBlocking(slide.back());
         Actions.runBlocking(rot.down());
-        Actions.runBlocking(mission.mid());
+        Actions.runBlocking(mission.set());
         //Actions.runBlocking(lift.liftUp());
         /*while (!isStopRequested() && !opModeIsActive()) {
             int position = visionOutputPosition;
