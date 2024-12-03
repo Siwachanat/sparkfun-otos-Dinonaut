@@ -58,7 +58,7 @@ public class LocalizationTest extends LinearOpMode {
 
             drive.updatePoseEstimate();
             if (gamepad1.dpad_up) {
-                S0.setPosition(0.59);
+                S0.setPosition(0.55);
             } else if (gamepad1.dpad_down) {
                 S1.setPosition(0.15);
                 S0.setPosition(1);
@@ -103,21 +103,22 @@ public class LocalizationTest extends LinearOpMode {
                 liftL.setPower(0);
 
             }
-            if (gamepad2.a){
-                Smid.setPosition(0.65);
-                SR.setPosition(0.91);
-                SL.setPosition(0.09);
-                Gripper.setPosition(0.2);
+            if (gamepad2.y){
+                Gripper.setPosition(0.835);
+                sleep(325);
+                S0.setPosition(0.65);
+                Smid.setPosition(0.4);
+                SR.setPosition(1);
+                SL.setPosition(0);
             }else if (gamepad2.b){
                 SR.setPosition(0.45);
                 SL.setPosition(0.55);
-            }else if (gamepad2.y){
-                Gripper.setPosition(0.82);
-                S0.setPosition(0.65);
-                sleep(420);
-                Smid.setPosition(0.85);
-                SR.setPosition(0.05);
-                SL.setPosition(0.95);
+                Gripper.setPosition(0.5);
+            }else if (gamepad2.a){
+                Gripper.setPosition(0.2);
+                Smid.setPosition(0.65);
+                SR.setPosition(0.335);
+                SL.setPosition(0.665);
            }else if (gamepad2.x){
 //                Gripper.setPosition(0.82);
 //                Smid.setPosition(0.85);
@@ -125,7 +126,7 @@ public class LocalizationTest extends LinearOpMode {
 //                SL.setPosition(0.05);
                 liftR.setPower(-0.7);
                 liftL.setPower(0.7);
-                sleep(750);
+                sleep(700);
 
 
            }

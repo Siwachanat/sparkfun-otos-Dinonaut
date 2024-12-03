@@ -53,8 +53,8 @@ public class BlueSideAuto extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 if (!initialized) {
-                    liftR.setPower(-0.9);
-                    liftL.setPower(0.9);
+                    liftR.setPower(-0.98);
+                    liftL.setPower(0.98);
                     initialized = true;
                 }
 
@@ -66,7 +66,7 @@ public class BlueSideAuto extends LinearOpMode {
 
 
                 packet.put("liftPos", posL);
-                if (posL < LiftReference +3800) {
+                if (posL < LiftReference +4050) {
                     return true;
                 } else {
                     liftL.setPower(0.1);
@@ -127,11 +127,11 @@ public class BlueSideAuto extends LinearOpMode {
 
                 double pos = liftL.getCurrentPosition();
                 packet.put("liftPos", pos);
-                if (pos > 1300) {
+                if (pos > 1500) {
                     return true;
                 } else {
-                    liftR.setPower(0.7);
-                    liftL.setPower(-0.7);
+                    liftR.setPower(0.95);
+                    liftL.setPower(-0.95);
                     return false;
                 }
             }
@@ -176,7 +176,7 @@ public class BlueSideAuto extends LinearOpMode {
                 gripper2.setPosition(0.835);
                 sleep(350);
                 S0.setPosition(0.65);
-                Smid.setPosition(0.4);
+                Smid.setPosition(0.15);
                 SR.setPosition(0.85);
                 SL.setPosition(0.15);
                 return false;
@@ -184,6 +184,22 @@ public class BlueSideAuto extends LinearOpMode {
         }
         public Action grip() {
             return new Grip();
+        }
+        public class PreGrip implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                sleep(100);
+                gripper2.setPosition(0.835);
+                sleep(350);
+                S0.setPosition(0.65);
+                Smid.setPosition(0.15);
+                SR.setPosition(0.7);
+                SL.setPosition(0.3);
+                return false;
+            }
+        }
+        public Action pregrip() {
+            return new PreGrip();
         }
         public class Re implements Action {
             @Override
@@ -361,19 +377,20 @@ public class BlueSideAuto extends LinearOpMode {
     @Override
     public void runOpMode() {
         Pose2d initialPose = new Pose2d(-23, -61.5, Math.toRadians(0));
-        Pose2d second = new Pose2d(-46,-45,Math.PI/4);
-        Pose2d second2 = new Pose2d(-46,-43,Math.PI/2);
-        Pose2d Third = new Pose2d(-58,-45,Math.PI/2);
-        Pose2d Forth = new Pose2d(-50,-24,Math.PI+0);
+        Pose2d second = new Pose2d(-47,-47.5,Math.PI/4);
+        Pose2d second2 = new Pose2d(-47,-47.5,Math.PI/2);
+        Pose2d Third = new Pose2d(-56.5,-41.75,Math.PI/2);
+        Pose2d Forth = new Pose2d(-52.3,-25,Math.PI+0);
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, initialPose);
         Gripper gripper = new Gripper(hardwareMap);
         Slide slide = new Slide(hardwareMap);
         Rot rot = new Rot(hardwareMap);
         Lift lift = new Lift(hardwareMap);
         Mission mission = new Mission(hardwareMap);
+        GripperRot gripperRot = new GripperRot(hardwareMap);
         // vision here that outputs position
         TrajectoryActionBuilder Putspec1 = drive.actionBuilder(initialPose)
-                .splineToLinearHeading(new Pose2d(-48,-49.5,Math.PI/4),-Math.PI*2);
+                .splineToLinearHeading(new Pose2d(-47,-47.5,Math.PI/4),-Math.PI*2);
 
 
         TrajectoryActionBuilder firstspec1 = drive.actionBuilder(second)
@@ -381,26 +398,21 @@ public class BlueSideAuto extends LinearOpMode {
                 .lineToY(-43);
 
         TrajectoryActionBuilder firstspec2 = drive.actionBuilder(second2)
-                .turn(-Math.PI/4)
-                .waitSeconds(2);//turn to put in to the basket
+                .lineToY(-47.5)
+                .turn(-Math.PI/4);//turn to put in to the basket
 
         TrajectoryActionBuilder tab3 = drive.actionBuilder(second)
-                .splineToLinearHeading(new Pose2d(-55,-43,Math.PI/2),Math.PI*2)
-                .waitSeconds(2);//go get second spec
+                .splineToLinearHeading(new Pose2d(-56.5,-41.75,Math.PI/2),Math.PI*2);//go get second spec
 
         TrajectoryActionBuilder tab4 = drive.actionBuilder(Third)
-                .splineToLinearHeading(new Pose2d(-45,-41,Math.PI/4),Math.PI*2)
-                .waitSeconds(2);//return to basket
+                .splineToLinearHeading(new Pose2d(-47,-48,Math.PI/4),Math.PI*2);//return to basket
 
         TrajectoryActionBuilder tab5 = drive.actionBuilder(second)
-                .splineToLinearHeading(new Pose2d(-50,-27,Math.PI+0),Math.PI*2)
-                .waitSeconds(2);//go to collect third spec
+                .splineToLinearHeading(new Pose2d(-52.3,-25,Math.PI+0),Math.PI*2);//go to collect third spec
         TrajectoryActionBuilder tab6 = drive.actionBuilder(Forth)
-                .splineToLinearHeading(new Pose2d(-45,-45,Math.PI/4),Math.PI*2)
-                .waitSeconds(2);//return to basket
+                .splineToLinearHeading(new Pose2d(-47.5,-48,Math.PI/4),Math.PI*2);//return to basket
         TrajectoryActionBuilder Park = drive.actionBuilder(second)
-                .splineToLinearHeading(new Pose2d(-25,-0,Math.PI+0),Math.PI*2)
-                .waitSeconds(2);//park
+                .splineToLinearHeading(new Pose2d(-25,-0,Math.PI+0),Math.PI*2);//park
 
 
 
@@ -442,33 +454,112 @@ public class BlueSideAuto extends LinearOpMode {
 
         Actions.runBlocking(
                 new SequentialAction(
-                        T0pos1,
                         new ParallelAction(
+                                T0pos1,
                                 lift.liftUp()),
-                        new SleepAction(1),
                         mission.grip(),
-                        new SleepAction(1),
+                        new SleepAction(0.5),
                         mission.releases(),
-                        new SleepAction(1),
+                        new SleepAction(0.3),
 
                         new ParallelAction(
-                                mission.set()),
-
-                        new SleepAction(1),
-                        lift.liftDown(),
-                        new SleepAction(3),
-                        new ParallelAction(
+                                mission.set(),
+                                new SleepAction(0.15),
+                                lift.liftDown(),
                                 T0pos2
+
+                        ),
+                        slide.full(),
+                        new SleepAction(0.55),
+                        gripper.pushDown(),
+                        new SleepAction(0.35),
+                        gripper.midUp(),
+                        new SleepAction(0.2),
+                        new ParallelAction(
+                                slide.back(),
+                                gripperRot.zero(),
+                                new SleepAction(0.3),
+                                rot.up()),
+                        new SleepAction(0.35),
+                        mission.mid(),
+                        new SleepAction(0.25),
+                        new ParallelAction(
+                                mission.pregrip(),
+                                T0pos3
+                        ),
+                        lift.liftUp(),
+                        mission.grip(),
+                        new SleepAction(0.2),
+                        mission.releases(),
+                        new SleepAction(0.4),
+                        lift.liftDown(),
+                        new ParallelAction(
+                                lift.liftDown(),
+                                T0pos4,
+                                rot.down()
+
                         ),
 
-                        T0pos3,
-                        T0pos4,
-                        T0pos5,
-                        T0pos6,
-                        T0pos7,
-                        T0pos8
 
-                )
+                        slide.full(),
+                        new SleepAction(0.55),
+                        gripper.pushDown(),
+                        new SleepAction(0.35),
+                        gripper.midUp(),
+                        new SleepAction(0.2),
+                        new ParallelAction(
+                                slide.back(),
+                                new SleepAction(0.3),
+                                rot.up()),
+                        new SleepAction(0.4),
+                        mission.mid(),
+                        new SleepAction(0.25),
+                        new ParallelAction(
+                                mission.pregrip(),
+                                T0pos5
+                        ),
+                        lift.liftUp(),
+                        mission.grip(),
+                        new SleepAction(0.2),
+                        mission.releases(),
+                        new SleepAction(0.25),
+                        lift.liftDown(),
+                        new ParallelAction(
+                                lift.liftDown(),
+                                new SleepAction(0.25),
+                                T0pos6,
+                                gripperRot.ninety(),
+                                rot.down(),
+                                new SleepAction(0.25)
+                        ),
+                        slide.full(),
+                        new SleepAction(0.55),
+                        gripper.pushDown(),
+                        new SleepAction(0.35),
+                        gripper.midUp(),
+                        new SleepAction(0.2),
+
+                        new ParallelAction(
+                                slide.back(),
+                                gripperRot.zero(),
+                                new SleepAction(0.3),
+                                rot.up()),
+                        new SleepAction(0.4),
+                        mission.mid(),
+                        new SleepAction(0.25),
+                        new ParallelAction(
+                                mission.pregrip(),
+                                T0pos7
+                        ),
+                        lift.liftUp(),
+                        mission.grip(),
+                        new SleepAction(0.25),
+                        mission.releases(),
+                        new SleepAction(0.25),
+                        lift.liftDown(),
+                        new SleepAction(0.25),
+                        T0pos8,
+                        new SleepAction(0.25)                )
 
 //                )
         );
