@@ -8,24 +8,21 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
-import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import org.firstinspires.ftc.teamcode.MecanumDrive;
+
 import org.firstinspires.ftc.teamcode.SparkFunOTOSDrive;
 
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import java.lang.ref.Reference;
-
 @Config
-@Autonomous(name = "BLUE_TEST_AUTO_PIXEL", group = "Autonomous")
-public class BlueSideAuto extends LinearOpMode {
+@Autonomous(name = "YELLOW_TEST_AUTO_PIXEL", group = "Autonomous")
+public class YellowSideAuto extends LinearOpMode {
 
     public class Lift {
         private DcMotorEx liftR;
@@ -53,8 +50,8 @@ public class BlueSideAuto extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 if (!initialized) {
-                    liftR.setPower(-0.98);
-                    liftL.setPower(0.98);
+                    liftR.setPower(-1);
+                    liftL.setPower(1);
                     initialized = true;
                 }
 
@@ -86,8 +83,8 @@ public class BlueSideAuto extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 if (!initialized) {
-                    liftR.setPower(-0.9);
-                    liftL.setPower(0.9);
+                    liftR.setPower(-1);
+                    liftL.setPower(1);
                     initialized = true;
                 }
 
@@ -159,7 +156,7 @@ public class BlueSideAuto extends LinearOpMode {
                 //Set Grip to Position
                 gripper2.setPosition(0.82);
                 sleep(200);
-                Smid.setPosition(0.1);
+                Smid.setPosition(0.9);
                 //Rotate Arm to 2nd level chamber
                 SR.setPosition(0.47);
                 SL.setPosition(0.53);
@@ -176,25 +173,41 @@ public class BlueSideAuto extends LinearOpMode {
                 gripper2.setPosition(0.835);
                 sleep(350);
                 S0.setPosition(0.65);
-                Smid.setPosition(0.15);
-                SR.setPosition(0.85);
-                SL.setPosition(0.15);
+                Smid.setPosition(0.8);
+                SR.setPosition(0.7);
+                SL.setPosition(0.3);
                 return false;
             }
         }
         public Action grip() {
             return new Grip();
         }
-        public class PreGrip implements Action {
+        public class END implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 sleep(100);
                 gripper2.setPosition(0.835);
                 sleep(350);
                 S0.setPosition(0.65);
-                Smid.setPosition(0.15);
-                SR.setPosition(0.7);
-                SL.setPosition(0.3);
+                Smid.setPosition(0.5);
+                SR.setPosition(0.9);
+                SL.setPosition(0.1);
+                return false;
+            }
+        }
+        public Action end() {
+            return new END();
+        }
+        public class PreGrip implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                sleep(100);
+                gripper2.setPosition(0.835);
+                sleep(320);
+                S0.setPosition(0.65);
+                Smid.setPosition(1.0);
+                SR.setPosition(0.5);
+                SL.setPosition(0.5);
                 return false;
             }
         }
@@ -205,6 +218,8 @@ public class BlueSideAuto extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 gripper2.setPosition(0.5);
+                sleep(25);
+                Smid.setPosition(1.0);
                 return false;
             }
         }
@@ -216,7 +231,7 @@ public class BlueSideAuto extends LinearOpMode {
             public boolean run(@NonNull TelemetryPacket packet) {
                 gripper2.setPosition(0.2);
 
-                Smid.setPosition(0.65);
+                Smid.setPosition(0.33);
                 SR.setPosition(0.335);
                 SL.setPosition(0.665);
                 gripper2.setPosition(0.2);
@@ -225,6 +240,20 @@ public class BlueSideAuto extends LinearOpMode {
         }
         public Action mid() {
             return new Mid();
+        }
+        public class Shake implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                SR.setPosition(0.72);
+                SL.setPosition(0.28);
+                sleep(55);
+                SR.setPosition(0.7);
+                SL.setPosition(0.3);
+                return false;
+            }
+        }
+        public Action shake() {
+            return new Shake();
         }
 
     }
@@ -321,7 +350,7 @@ public class BlueSideAuto extends LinearOpMode {
         public class Back implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                slide.setPosition(0.48);
+                slide.setPosition(0.52);
                 return false;
             }
         }
@@ -377,10 +406,11 @@ public class BlueSideAuto extends LinearOpMode {
     @Override
     public void runOpMode() {
         Pose2d initialPose = new Pose2d(-23, -61.5, Math.toRadians(0));
-        Pose2d second = new Pose2d(-47,-47.5,Math.PI/4);
-        Pose2d second2 = new Pose2d(-47,-47.5,Math.PI/2);
-        Pose2d Third = new Pose2d(-56.5,-41.75,Math.PI/2);
-        Pose2d Forth = new Pose2d(-52.3,-25,Math.PI+0);
+        Pose2d second = new Pose2d(-51,-50,Math.PI/6);
+        Pose2d second2 = new Pose2d(-47.5,-42.4,Math.PI/2);
+        Pose2d Third = new Pose2d(-56.3,-42.3,Math.PI/2);
+        Pose2d Forth = new Pose2d(-52,-25.6,Math.PI+0);
+        Pose2d sec2 = new Pose2d(-51,-51,Math.PI/4);
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, initialPose);
         Gripper gripper = new Gripper(hardwareMap);
         Slide slide = new Slide(hardwareMap);
@@ -390,29 +420,27 @@ public class BlueSideAuto extends LinearOpMode {
         GripperRot gripperRot = new GripperRot(hardwareMap);
         // vision here that outputs position
         TrajectoryActionBuilder Putspec1 = drive.actionBuilder(initialPose)
-                .splineToLinearHeading(new Pose2d(-47,-47.5,Math.PI/4),-Math.PI*2);
+                .splineToLinearHeading(new Pose2d(-51,-50,Math.PI/6),-Math.PI*2);
 
 
         TrajectoryActionBuilder firstspec1 = drive.actionBuilder(second)
-                .turn(Math.PI/4)
-                .lineToY(-43);
+                .splineToLinearHeading(new Pose2d(-47.5,-42.4,Math.PI/2),-Math.PI*2);
 
         TrajectoryActionBuilder firstspec2 = drive.actionBuilder(second2)
-                .lineToY(-47.5)
-                .turn(-Math.PI/4);//turn to put in to the basket
+                .splineToLinearHeading(new Pose2d(-51,-51,Math.PI/4),-Math.PI*2);//turn to put in to the basket
 
-        TrajectoryActionBuilder tab3 = drive.actionBuilder(second)
-                .splineToLinearHeading(new Pose2d(-56.5,-41.75,Math.PI/2),Math.PI*2);//go get second spec
+        TrajectoryActionBuilder tab3 = drive.actionBuilder(sec2)
+                .splineToLinearHeading(new Pose2d(-56.3,-42.3,Math.PI/2),Math.PI*2);//go get second spec
 
         TrajectoryActionBuilder tab4 = drive.actionBuilder(Third)
-                .splineToLinearHeading(new Pose2d(-47,-48,Math.PI/4),Math.PI*2);//return to basket
+                .splineToLinearHeading(new Pose2d(-51,-51,Math.PI/4),Math.PI*2);//return to basket
 
-        TrajectoryActionBuilder tab5 = drive.actionBuilder(second)
-                .splineToLinearHeading(new Pose2d(-52.3,-25,Math.PI+0),Math.PI*2);//go to collect third spec
+        TrajectoryActionBuilder tab5 = drive.actionBuilder(sec2)
+                .splineToLinearHeading(new Pose2d(-52,-25.6,Math.PI+0),Math.PI*2);//go to collect third spec
         TrajectoryActionBuilder tab6 = drive.actionBuilder(Forth)
-                .splineToLinearHeading(new Pose2d(-47.5,-48,Math.PI/4),Math.PI*2);//return to basket
-        TrajectoryActionBuilder Park = drive.actionBuilder(second)
-                .splineToLinearHeading(new Pose2d(-25,-0,Math.PI+0),Math.PI*2);//park
+                .splineToLinearHeading(new Pose2d(-51,-51,Math.PI/4),Math.PI*2);//return to basket
+        TrajectoryActionBuilder Park = drive.actionBuilder(sec2)
+                .splineToLinearHeading(new Pose2d(-27.2,-0,Math.PI+0),Math.PI*2);//park
 
 
 
@@ -423,7 +451,7 @@ public class BlueSideAuto extends LinearOpMode {
         Actions.runBlocking(slide.back());
         Actions.runBlocking(rot.down());
         Actions.runBlocking(mission.set());
-
+        Actions.runBlocking(gripperRot.zero());
 
 
         Action T0pos1;
@@ -458,10 +486,11 @@ public class BlueSideAuto extends LinearOpMode {
                                 T0pos1,
                                 lift.liftUp()),
                         mission.grip(),
-                        new SleepAction(0.5),
+                        new SleepAction(0.25),
                         mission.releases(),
-                        new SleepAction(0.3),
-
+                        new SleepAction(0.2),
+                        mission.shake(),
+                        new SleepAction(0.05),
                         new ParallelAction(
                                 mission.set(),
                                 new SleepAction(0.15),
@@ -470,17 +499,17 @@ public class BlueSideAuto extends LinearOpMode {
 
                         ),
                         slide.full(),
-                        new SleepAction(0.55),
+                        new SleepAction(0.52),
                         gripper.pushDown(),
                         new SleepAction(0.35),
                         gripper.midUp(),
-                        new SleepAction(0.2),
+                        new SleepAction(0.15),
                         new ParallelAction(
                                 slide.back(),
                                 gripperRot.zero(),
-                                new SleepAction(0.3),
+                                new SleepAction(0.1),
                                 rot.up()),
-                        new SleepAction(0.35),
+                        new SleepAction(0.45),
                         mission.mid(),
                         new SleepAction(0.25),
                         new ParallelAction(
@@ -489,11 +518,14 @@ public class BlueSideAuto extends LinearOpMode {
                         ),
                         lift.liftUp(),
                         mission.grip(),
-                        new SleepAction(0.2),
+                        new SleepAction(0.25),
                         mission.releases(),
-                        new SleepAction(0.4),
-                        lift.liftDown(),
+                        new SleepAction(0.25),
+                        mission.shake(),
+                        new SleepAction(0.05),
                         new ParallelAction(
+                                mission.set(),
+                                new SleepAction(0.15),
                                 lift.liftDown(),
                                 T0pos4,
                                 rot.down()
@@ -502,16 +534,16 @@ public class BlueSideAuto extends LinearOpMode {
 
 
                         slide.full(),
-                        new SleepAction(0.55),
+                        new SleepAction(0.52),
                         gripper.pushDown(),
-                        new SleepAction(0.35),
+                        new SleepAction(0.3),
                         gripper.midUp(),
                         new SleepAction(0.2),
                         new ParallelAction(
                                 slide.back(),
                                 new SleepAction(0.3),
                                 rot.up()),
-                        new SleepAction(0.4),
+                        new SleepAction(0.3),
                         mission.mid(),
                         new SleepAction(0.25),
                         new ParallelAction(
@@ -520,45 +552,56 @@ public class BlueSideAuto extends LinearOpMode {
                         ),
                         lift.liftUp(),
                         mission.grip(),
-                        new SleepAction(0.2),
-                        mission.releases(),
                         new SleepAction(0.25),
-                        lift.liftDown(),
+                        mission.releases(),
+                        mission.shake(),
+                        new SleepAction(0.05),
+                        new SleepAction(0.3),
                         new ParallelAction(
+                                mission.set(),
+                                new SleepAction(0.15),
                                 lift.liftDown(),
-                                new SleepAction(0.25),
                                 T0pos6,
                                 gripperRot.ninety(),
                                 rot.down(),
-                                new SleepAction(0.25)
+                                new SleepAction(0.2)
                         ),
                         slide.full(),
-                        new SleepAction(0.55),
+                        new SleepAction(0.52),
                         gripper.pushDown(),
-                        new SleepAction(0.35),
+                        new SleepAction(0.3),
                         gripper.midUp(),
                         new SleepAction(0.2),
 
                         new ParallelAction(
                                 slide.back(),
                                 gripperRot.zero(),
-                                new SleepAction(0.3),
+                                new SleepAction(0.2),
                                 rot.up()),
-                        new SleepAction(0.4),
+                        new SleepAction(0.3),
                         mission.mid(),
-                        new SleepAction(0.25),
+                        new SleepAction(0.2),
                         new ParallelAction(
                                 mission.pregrip(),
                                 T0pos7
                         ),
                         lift.liftUp(),
-                        mission.grip(),
-                        new SleepAction(0.25),
-                        mission.releases(),
-                        new SleepAction(0.25),
-                        lift.liftDown(),
-                        new SleepAction(0.25),
-                        T0pos8,
+                        new ParallelAction(
+                                mission.grip(),
+                                new SleepAction(0.25),
+                                mission.releases(),
+                                new SleepAction(0.25)
+                        ),
+                        mission.shake(),
+                        new SleepAction(0.05),
+                        new ParallelAction(
+                                mission.set(),
+                                new SleepAction(0.15),
+                                lift.liftDown(),
+                                mission.end(),
+                                T0pos8
+                        ),
+
                         new SleepAction(0.25)                )
 
 //                )
