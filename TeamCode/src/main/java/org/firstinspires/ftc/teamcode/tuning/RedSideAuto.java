@@ -364,7 +364,7 @@ public class RedSideAuto extends LinearOpMode {
     @Override
     public void runOpMode() {
         Pose2d initialPose = new Pose2d(23, -63, Math.toRadians(0));
-        Pose2d secondpose = new Pose2d(40, -45, Math.PI*3/2);
+        Pose2d secondpose = new Pose2d(44, -45, Math.PI*3/2);
         Pose2d benopos1 =  new Pose2d(2,-34,Math.PI*3/2);
         Pose2d benopos2 =  new Pose2d(4,-34,Math.PI*3/2);
         Pose2d benopos3 =  new Pose2d(6,-34,Math.PI*3/2);
@@ -385,13 +385,13 @@ public class RedSideAuto extends LinearOpMode {
                 .splineToLinearHeading( new Pose2d(0,-35,Math.PI*3/2),Math.PI/1.5,new TranslationalVelConstraint(42.5));
 
         Action tab1 = Tomid.endTrajectory().fresh()
-                .splineToSplineHeading(new Pose2d(28.5,-38,Math.PI*0),Math.PI*0.5)
+                .splineToSplineHeading(new Pose2d(25.5,-38,Math.PI*0),Math.PI*0.5)
                 .splineToConstantHeading(new Vector2d(35.5,-13),Math.PI/3)//1
                 .splineToConstantHeading(new Vector2d(47,-51),Math.PI*3/2,null,new ProfileAccelConstraint(-30,70))
 //                .new com.acmerobotics.roadrunner.VelConstraint()
                 .splineToConstantHeading(new Vector2d(44,-12.5),Math.PI/3,new TranslationalVelConstraint(42.5))//2
                 .splineToConstantHeading(new Vector2d(54.75,-51),Math.PI*3/2,null,new ProfileAccelConstraint(-30,70))
-                .splineToSplineHeading(new Pose2d(42.5,-46.5,Math.PI*3/2),Math.PI*0.15,new TranslationalVelConstraint(55))
+                .splineToSplineHeading(new Pose2d(44,-46.5,Math.PI*3/2),Math.PI*0.15,new TranslationalVelConstraint(55))
                 .waitSeconds(0.2)
 
                 .build();
@@ -421,18 +421,18 @@ public class RedSideAuto extends LinearOpMode {
 
 
         TrajectoryActionBuilder Tobeno1 = drive.actionBuilder (benopos1)
-                .splineToConstantHeading( new Vector2d(42.5,-46.5),Math.PI*1.5,new TranslationalVelConstraint(65.0))
+                .splineToConstantHeading( new Vector2d(44,-45),Math.PI*1.5,new TranslationalVelConstraint(65.0))
                 .waitSeconds(0.25);
 
 
 
         TrajectoryActionBuilder Tobeno2 = drive.actionBuilder (benopos2)
-                .splineToConstantHeading( new Vector2d(42.5,-46.5),Math.PI*1.5,new TranslationalVelConstraint(65.0))
+                .splineToConstantHeading( new Vector2d(44,-46.5),Math.PI*1.5,new TranslationalVelConstraint(65.0))
                 .waitSeconds(0.25);
 
 
         TrajectoryActionBuilder Tobeno3 = drive.actionBuilder (benopos3)
-                .splineToConstantHeading( new Vector2d(42.5,-46.5),Math.PI*1.5,new TranslationalVelConstraint(65.0))
+                .splineToConstantHeading( new Vector2d(44,-46.5),Math.PI*1.5,new TranslationalVelConstraint(65.0))
                 .waitSeconds(0.25);
 
 
