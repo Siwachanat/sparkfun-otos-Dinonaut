@@ -405,7 +405,7 @@ public class YellowSideAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        Pose2d initialPose = new Pose2d(-23, -61.5, Math.toRadians(0));
+        Pose2d initialPose = new Pose2d(-37.5, -61.5, Math.toRadians(0));
         Pose2d second = new Pose2d(-51,-50,Math.PI/6);
         Pose2d second2 = new Pose2d(-47.5,-42.4,Math.PI/2);
         Pose2d Third = new Pose2d(-56.3,-42.3,Math.PI/2);

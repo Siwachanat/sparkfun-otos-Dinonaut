@@ -363,7 +363,7 @@ public class RedSideAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        Pose2d initialPose = new Pose2d(23, -63, Math.toRadians(0));
+        Pose2d initialPose = new Pose2d(26, -63, Math.toRadians(0));
         Pose2d secondpose = new Pose2d(44, -45, Math.PI*3/2);
         Pose2d benopos1 =  new Pose2d(2,-34,Math.PI*3/2);
         Pose2d benopos2 =  new Pose2d(4,-34,Math.PI*3/2);
