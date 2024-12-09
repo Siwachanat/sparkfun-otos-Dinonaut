@@ -8,6 +8,7 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
+import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -63,11 +64,11 @@ public class YellowSideAuto extends LinearOpMode {
 
 
                 packet.put("liftPos", posL);
-                if (posL < LiftReference +4050) {
+                if (posL < LiftReference +4150) {
                     return true;
                 } else {
-                    liftL.setPower(0.1);
-                    liftR.setPower(0.1);
+                    liftL.setPower(0.12);
+                    liftR.setPower(0.12);
                     return false;
                 }
 
@@ -406,11 +407,11 @@ public class YellowSideAuto extends LinearOpMode {
     @Override
     public void runOpMode() {
         Pose2d initialPose = new Pose2d(-37.5, -61.5, Math.toRadians(0));
-        Pose2d second = new Pose2d(-51,-50,Math.PI/6);
+        Pose2d second = new Pose2d(-49.5,-50,Math.PI/4.3);
         Pose2d second2 = new Pose2d(-47.5,-42.4,Math.PI/2);
         Pose2d Third = new Pose2d(-56.3,-42.3,Math.PI/2);
-        Pose2d Forth = new Pose2d(-52,-25.6,Math.PI+0);
-        Pose2d sec2 = new Pose2d(-51,-51,Math.PI/4);
+        Pose2d Forth = new Pose2d(-52,-28,Math.PI+0);
+        Pose2d sec2 = new Pose2d(-49.5,-50,Math.PI/4);
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, initialPose);
         Gripper gripper = new Gripper(hardwareMap);
         Slide slide = new Slide(hardwareMap);
@@ -420,27 +421,27 @@ public class YellowSideAuto extends LinearOpMode {
         GripperRot gripperRot = new GripperRot(hardwareMap);
         // vision here that outputs position
         TrajectoryActionBuilder Putspec1 = drive.actionBuilder(initialPose)
-                .splineToLinearHeading(new Pose2d(-51,-50,Math.PI/6),-Math.PI*2);
+                .splineToLinearHeading(new Pose2d(-49.5,-50,Math.PI/4.3),-Math.PI*2,new TranslationalVelConstraint(48.0));
 
 
         TrajectoryActionBuilder firstspec1 = drive.actionBuilder(second)
-                .splineToLinearHeading(new Pose2d(-47.5,-42.4,Math.PI/2),-Math.PI*2);
+                .splineToLinearHeading(new Pose2d(-47.5,-42.4,Math.PI/2),-Math.PI*2,new TranslationalVelConstraint(57.0));
 
         TrajectoryActionBuilder firstspec2 = drive.actionBuilder(second2)
-                .splineToLinearHeading(new Pose2d(-51,-51,Math.PI/4),-Math.PI*2);//turn to put in to the basket
+                .splineToLinearHeading(new Pose2d(-49.5,-50,Math.PI/4),-Math.PI*2);//turn to put in to the basket
 
         TrajectoryActionBuilder tab3 = drive.actionBuilder(sec2)
-                .splineToLinearHeading(new Pose2d(-56.3,-42.3,Math.PI/2),Math.PI*2);//go get second spec
+                .splineToLinearHeading(new Pose2d(-56.3,-42.3,Math.PI/2),Math.PI*2,new TranslationalVelConstraint(57.0));//go get second spec
 
         TrajectoryActionBuilder tab4 = drive.actionBuilder(Third)
-                .splineToLinearHeading(new Pose2d(-51,-51,Math.PI/4),Math.PI*2);//return to basket
+                .splineToLinearHeading(new Pose2d(-49.5,-50,Math.PI/4),Math.PI*2);//return to basket
 
         TrajectoryActionBuilder tab5 = drive.actionBuilder(sec2)
-                .splineToLinearHeading(new Pose2d(-52,-25.6,Math.PI+0),Math.PI*2);//go to collect third spec
+                .splineToLinearHeading(new Pose2d(-52,-28,Math.PI+0),Math.PI*2,new TranslationalVelConstraint(40.0));//go to collect third spec
         TrajectoryActionBuilder tab6 = drive.actionBuilder(Forth)
-                .splineToLinearHeading(new Pose2d(-51,-51,Math.PI/4),Math.PI*2);//return to basket
+                .splineToLinearHeading(new Pose2d(-49.5,-50,Math.PI/4),Math.PI*2);//return to basket
         TrajectoryActionBuilder Park = drive.actionBuilder(sec2)
-                .splineToLinearHeading(new Pose2d(-27.2,-0,Math.PI+0),Math.PI*2);//park
+                .splineToLinearHeading(new Pose2d(-27.2,-0,Math.PI+0),Math.PI*2,new TranslationalVelConstraint(67.0));//park
 
 
 
@@ -488,12 +489,12 @@ public class YellowSideAuto extends LinearOpMode {
                         mission.grip(),
                         new SleepAction(0.25),
                         mission.releases(),
-                        new SleepAction(0.2),
-                        mission.shake(),
-                        new SleepAction(0.05),
+                        new SleepAction(0.23),
+//                        mission.shake(),
+//                        new SleepAction(0.05),
                         new ParallelAction(
                                 mission.set(),
-                                new SleepAction(0.15),
+                                new SleepAction(0.25),
                                 lift.liftDown(),
                                 T0pos2
 
@@ -521,11 +522,11 @@ public class YellowSideAuto extends LinearOpMode {
                         new SleepAction(0.25),
                         mission.releases(),
                         new SleepAction(0.25),
-                        mission.shake(),
-                        new SleepAction(0.05),
+//                        mission.shake(),
+//                        new SleepAction(0.05),
                         new ParallelAction(
                                 mission.set(),
-                                new SleepAction(0.15),
+                                new SleepAction(0.25),
                                 lift.liftDown(),
                                 T0pos4,
                                 rot.down()
@@ -554,20 +555,21 @@ public class YellowSideAuto extends LinearOpMode {
                         mission.grip(),
                         new SleepAction(0.25),
                         mission.releases(),
-                        mission.shake(),
-                        new SleepAction(0.05),
+//                        mission.shake(),
+//                        new SleepAction(0.05),
                         new SleepAction(0.3),
                         new ParallelAction(
                                 mission.set(),
-                                new SleepAction(0.15),
+                                new SleepAction(0.25),
                                 lift.liftDown(),
                                 T0pos6,
+                                gripper.pushUp(),
                                 gripperRot.ninety(),
                                 rot.down(),
                                 new SleepAction(0.2)
                         ),
                         slide.full(),
-                        new SleepAction(0.52),
+                        new SleepAction(0.55),
                         gripper.pushDown(),
                         new SleepAction(0.3),
                         gripper.midUp(),
@@ -592,11 +594,11 @@ public class YellowSideAuto extends LinearOpMode {
                                 mission.releases(),
                                 new SleepAction(0.25)
                         ),
-                        mission.shake(),
-                        new SleepAction(0.05),
+//                        mission.shake(),
+//                        new SleepAction(0.05),
                         new ParallelAction(
                                 mission.set(),
-                                new SleepAction(0.15),
+                                new SleepAction(0.25),
                                 lift.liftDown(),
                                 mission.end(),
                                 T0pos8
