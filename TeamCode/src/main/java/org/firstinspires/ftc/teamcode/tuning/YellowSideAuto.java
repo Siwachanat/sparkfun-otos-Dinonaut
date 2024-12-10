@@ -406,11 +406,11 @@ public class YellowSideAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        Pose2d initialPose = new Pose2d(-37.5, -61.5, Math.toRadians(0));
-        Pose2d second = new Pose2d(-49.5,-50,Math.PI/4.3);
-        Pose2d second2 = new Pose2d(-47.5,-42.4,Math.PI/2);
-        Pose2d Third = new Pose2d(-56.3,-42.3,Math.PI/2);
-        Pose2d Forth = new Pose2d(-52,-28,Math.PI+0);
+        Pose2d initialPose = new Pose2d(-38.5, -61.5, Math.toRadians(0));
+        Pose2d second = new Pose2d(-48,-49,Math.PI/4.3);
+        Pose2d second2 = new Pose2d(-47.5,-45,Math.PI/2);
+        Pose2d Third = new Pose2d(-57,-45.5,Math.PI/2);
+        Pose2d Forth = new Pose2d(-52.75,-28,Math.PI+0);
         Pose2d sec2 = new Pose2d(-49.5,-50,Math.PI/4);
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, initialPose);
         Gripper gripper = new Gripper(hardwareMap);
@@ -421,27 +421,27 @@ public class YellowSideAuto extends LinearOpMode {
         GripperRot gripperRot = new GripperRot(hardwareMap);
         // vision here that outputs position
         TrajectoryActionBuilder Putspec1 = drive.actionBuilder(initialPose)
-                .splineToLinearHeading(new Pose2d(-49.5,-50,Math.PI/4.3),-Math.PI*2,new TranslationalVelConstraint(48.0));
+                .splineToLinearHeading(new Pose2d(-48,-49,Math.PI/4.3),-Math.PI*2,new TranslationalVelConstraint(45.0));
 
 
         TrajectoryActionBuilder firstspec1 = drive.actionBuilder(second)
-                .splineToLinearHeading(new Pose2d(-47.5,-42.4,Math.PI/2),-Math.PI*2,new TranslationalVelConstraint(57.0));
+                .splineToLinearHeading(new Pose2d(-47.5,-45,Math.PI/2),-Math.PI*2,new TranslationalVelConstraint(50.0));
 
         TrajectoryActionBuilder firstspec2 = drive.actionBuilder(second2)
-                .splineToLinearHeading(new Pose2d(-49.5,-50,Math.PI/4),-Math.PI*2);//turn to put in to the basket
+                .splineToLinearHeading(new Pose2d(-49.5,-49,Math.PI/4),-Math.PI*2);//turn to put in to the basket
 
         TrajectoryActionBuilder tab3 = drive.actionBuilder(sec2)
-                .splineToLinearHeading(new Pose2d(-56.3,-42.3,Math.PI/2),Math.PI*2,new TranslationalVelConstraint(57.0));//go get second spec
+                .splineToLinearHeading(new Pose2d(-57,-45.5,Math.PI/2),Math.PI*2,new TranslationalVelConstraint(55.0));//go get second spec
 
         TrajectoryActionBuilder tab4 = drive.actionBuilder(Third)
                 .splineToLinearHeading(new Pose2d(-49.5,-50,Math.PI/4),Math.PI*2);//return to basket
 
         TrajectoryActionBuilder tab5 = drive.actionBuilder(sec2)
-                .splineToLinearHeading(new Pose2d(-52,-28,Math.PI+0),Math.PI*2,new TranslationalVelConstraint(40.0));//go to collect third spec
+                .splineToLinearHeading(new Pose2d(-52.75,-28,Math.PI+0),Math.PI*2,new TranslationalVelConstraint(45.0));//go to collect third spec
         TrajectoryActionBuilder tab6 = drive.actionBuilder(Forth)
-                .splineToLinearHeading(new Pose2d(-49.5,-50,Math.PI/4),Math.PI*2);//return to basket
+                .splineToLinearHeading(new Pose2d(-49,-50,Math.PI/4),Math.PI*2);//return to basket
         TrajectoryActionBuilder Park = drive.actionBuilder(sec2)
-                .splineToLinearHeading(new Pose2d(-27.2,-0,Math.PI+0),Math.PI*2,new TranslationalVelConstraint(67.0));//park
+                .splineToLinearHeading(new Pose2d(-27.2,-0,Math.PI+0),Math.PI*2,new TranslationalVelConstraint(65.0));//park
 
 
 
@@ -496,6 +496,7 @@ public class YellowSideAuto extends LinearOpMode {
                                 mission.set(),
                                 new SleepAction(0.25),
                                 lift.liftDown(),
+                                //new SleepAction(0.55),
                                 T0pos2
 
                         ),

@@ -364,10 +364,10 @@ public class RedSideAuto extends LinearOpMode {
     @Override
     public void runOpMode() {
         Pose2d initialPose = new Pose2d(26, -63, Math.toRadians(0));
-        Pose2d secondpose = new Pose2d(44, -45, Math.PI*3/2);
-        Pose2d benopos1 =  new Pose2d(2,-34,Math.PI*3/2);
-        Pose2d benopos2 =  new Pose2d(4,-34,Math.PI*3/2);
-        Pose2d benopos3 =  new Pose2d(6,-34,Math.PI*3/2);
+        Pose2d secondpose = new Pose2d(44, -47, Math.PI*3/2);
+        Pose2d benopos1 =  new Pose2d(3,-35.8,Math.PI*3/2);
+        Pose2d benopos2 =  new Pose2d(0,-38.8,Math.PI*3/2);
+        Pose2d benopos3 =  new Pose2d(4,-35.8,Math.PI*3/2);
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, initialPose);
         Gripper gripper = new Gripper(hardwareMap);
         Slide slide = new Slide(hardwareMap);
@@ -391,20 +391,20 @@ public class RedSideAuto extends LinearOpMode {
 //                .new com.acmerobotics.roadrunner.VelConstraint()
                 .splineToConstantHeading(new Vector2d(44,-12.5),Math.PI/3,new TranslationalVelConstraint(42.5))//2
                 .splineToConstantHeading(new Vector2d(54.75,-51),Math.PI*3/2,null,new ProfileAccelConstraint(-30,70))
-                .splineToSplineHeading(new Pose2d(44,-46.5,Math.PI*3/2),Math.PI*0.15,new TranslationalVelConstraint(55))
+                .splineToSplineHeading(new Pose2d(44,-47,Math.PI*3/2),Math.PI*0.15,new TranslationalVelConstraint(55))
                 .waitSeconds(0.2)
 
                 .build();
 
         TrajectoryActionBuilder Tomid2 = drive.actionBuilder (secondpose)
-                .splineToConstantHeading( new Vector2d(5,-35),Math.PI*0.5,new TranslationalVelConstraint(40.0));
+                .splineToConstantHeading( new Vector2d(3,-35.8),Math.PI*0.5,new TranslationalVelConstraint(40.0));
 //                .waitSeconds(1.5)
 //                .splineToConstantHeading( new Vector2d(48,-45),Math.PI*0.5);
 
 
 
         TrajectoryActionBuilder Tomid3 = drive.actionBuilder (secondpose)
-                .splineToConstantHeading( new Vector2d(0,-35),Math.PI*0.5,new TranslationalVelConstraint(40.0));
+                .splineToConstantHeading( new Vector2d(0,-35.8),Math.PI*0.5,new TranslationalVelConstraint(40.0));
 //                .waitSeconds(1.5)
 //                .splineToConstantHeading( new Vector2d(48,-45),Math.PI*0.5);
 
@@ -412,7 +412,7 @@ public class RedSideAuto extends LinearOpMode {
 
 
         TrajectoryActionBuilder Tomid4 = drive.actionBuilder (secondpose)
-                .splineToConstantHeading( new Vector2d(-4,-35),Math.PI*0.5,new TranslationalVelConstraint(40.0));
+                .splineToConstantHeading( new Vector2d(-4,-35.8),Math.PI*0.5,new TranslationalVelConstraint(40.0));
 //                .waitSeconds(1)
 //                .splineToConstantHeading( new Vector2d(48,-45),Math.PI*0.5);
 
@@ -427,12 +427,12 @@ public class RedSideAuto extends LinearOpMode {
 
 
         TrajectoryActionBuilder Tobeno2 = drive.actionBuilder (benopos2)
-                .splineToConstantHeading( new Vector2d(44,-46.5),Math.PI*1.5,new TranslationalVelConstraint(65.0))
+                .splineToConstantHeading( new Vector2d(44,-46),Math.PI*1.5,new TranslationalVelConstraint(65.0))
                 .waitSeconds(0.25);
 
 
         TrajectoryActionBuilder Tobeno3 = drive.actionBuilder (benopos3)
-                .splineToConstantHeading( new Vector2d(44,-46.5),Math.PI*1.5,new TranslationalVelConstraint(65.0))
+                .splineToConstantHeading( new Vector2d(44,-46),Math.PI*1.5,new TranslationalVelConstraint(65.0))
                 .waitSeconds(0.25);
 
 
