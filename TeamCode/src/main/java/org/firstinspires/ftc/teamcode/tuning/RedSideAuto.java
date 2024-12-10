@@ -364,7 +364,8 @@ public class RedSideAuto extends LinearOpMode {
     @Override
     public void runOpMode() {
         Pose2d initialPose = new Pose2d(26, -63, Math.toRadians(0));
-        Pose2d secondpose = new Pose2d(44, -47, Math.PI*3/2);
+        Pose2d second = new Pose2d(0,-35.5,Math.PI*3/2);
+        Pose2d third = new Pose2d(44, -46, Math.PI*3/2);
         Pose2d benopos1 =  new Pose2d(3,-35.8,Math.PI*3/2);
         Pose2d benopos2 =  new Pose2d(0,-38.8,Math.PI*3/2);
         Pose2d benopos3 =  new Pose2d(4,-35.8,Math.PI*3/2);
@@ -382,37 +383,37 @@ public class RedSideAuto extends LinearOpMode {
         //        .waitSeconds(0.5);
 
         TrajectoryActionBuilder Tomid = drive.actionBuilder (initialPose)
-                .splineToLinearHeading( new Pose2d(0,-35,Math.PI*3/2),Math.PI/1.5,new TranslationalVelConstraint(42.5));
+                .splineToLinearHeading( new Pose2d(0,-35.5,Math.PI*3/2),Math.PI/1.5,new TranslationalVelConstraint(45.5));
 
-        Action tab1 = Tomid.endTrajectory().fresh()
-                .splineToSplineHeading(new Pose2d(25.5,-38,Math.PI*0),Math.PI*0.5)
-                .splineToConstantHeading(new Vector2d(35.5,-13),Math.PI/3)//1
-                .splineToConstantHeading(new Vector2d(47,-51),Math.PI*3/2,null,new ProfileAccelConstraint(-30,70))
+        TrajectoryActionBuilder tab1 = drive.actionBuilder (second)
+                .splineToSplineHeading(new Pose2d(28.5,-37.5,Math.PI*0),Math.PI*2,new TranslationalVelConstraint(50.5))
+                .splineToConstantHeading(new Vector2d(34,-12.5),Math.PI/3)//1
+                .splineToConstantHeading(new Vector2d(48.5,-51),Math.PI*3/2,null,new ProfileAccelConstraint(-30,70))
 //                .new com.acmerobotics.roadrunner.VelConstraint()
-                .splineToConstantHeading(new Vector2d(44,-12.5),Math.PI/3,new TranslationalVelConstraint(42.5))//2
-                .splineToConstantHeading(new Vector2d(54.75,-51),Math.PI*3/2,null,new ProfileAccelConstraint(-30,70))
-                .splineToSplineHeading(new Pose2d(44,-47,Math.PI*3/2),Math.PI*0.15,new TranslationalVelConstraint(55))
-                .waitSeconds(0.2)
+                .splineToConstantHeading(new Vector2d(42,-12.5),Math.PI/3,new TranslationalVelConstraint(45))//2
+                .splineToConstantHeading(new Vector2d(57,-51),Math.PI*3/2,null,new ProfileAccelConstraint(-30,70))
+                .splineToSplineHeading(new Pose2d(44,-46,Math.PI*3/2),Math.PI*0.15,new TranslationalVelConstraint(65))
+                .waitSeconds(0.2);
 
-                .build();
+                //.build();
 
-        TrajectoryActionBuilder Tomid2 = drive.actionBuilder (secondpose)
-                .splineToConstantHeading( new Vector2d(3,-35.8),Math.PI*0.5,new TranslationalVelConstraint(40.0));
+        TrajectoryActionBuilder Tomid2 = drive.actionBuilder (third)
+                .splineToConstantHeading( new Vector2d(3,-35.8),Math.PI*0.5,new TranslationalVelConstraint(70.0));
 //                .waitSeconds(1.5)
 //                .splineToConstantHeading( new Vector2d(48,-45),Math.PI*0.5);
 
 
 
-        TrajectoryActionBuilder Tomid3 = drive.actionBuilder (secondpose)
-                .splineToConstantHeading( new Vector2d(0,-35.8),Math.PI*0.5,new TranslationalVelConstraint(40.0));
+        TrajectoryActionBuilder Tomid3 = drive.actionBuilder (third)
+                .splineToConstantHeading( new Vector2d(0,-35.8),Math.PI*0.5,new TranslationalVelConstraint(70.0));
 //                .waitSeconds(1.5)
 //                .splineToConstantHeading( new Vector2d(48,-45),Math.PI*0.5);
 
 
 
 
-        TrajectoryActionBuilder Tomid4 = drive.actionBuilder (secondpose)
-                .splineToConstantHeading( new Vector2d(-4,-35.8),Math.PI*0.5,new TranslationalVelConstraint(40.0));
+        TrajectoryActionBuilder Tomid4 = drive.actionBuilder (third)
+                .splineToConstantHeading( new Vector2d(-4,-35.8),Math.PI*0.5,new TranslationalVelConstraint(70.0));
 //                .waitSeconds(1)
 //                .splineToConstantHeading( new Vector2d(48,-45),Math.PI*0.5);
 
@@ -421,19 +422,16 @@ public class RedSideAuto extends LinearOpMode {
 
 
         TrajectoryActionBuilder Tobeno1 = drive.actionBuilder (benopos1)
-                .splineToConstantHeading( new Vector2d(44,-45),Math.PI*1.5,new TranslationalVelConstraint(65.0))
-                .waitSeconds(0.25);
+                .splineToConstantHeading( new Vector2d(44,-46),Math.PI*1.5,new TranslationalVelConstraint(80.0));
 
 
 
         TrajectoryActionBuilder Tobeno2 = drive.actionBuilder (benopos2)
-                .splineToConstantHeading( new Vector2d(44,-46),Math.PI*1.5,new TranslationalVelConstraint(65.0))
-                .waitSeconds(0.25);
+                .splineToConstantHeading( new Vector2d(44,-46),Math.PI*1.5,new TranslationalVelConstraint(80.0));
 
 
         TrajectoryActionBuilder Tobeno3 = drive.actionBuilder (benopos3)
-                .splineToConstantHeading( new Vector2d(44,-46),Math.PI*1.5,new TranslationalVelConstraint(65.0))
-                .waitSeconds(0.25);
+                .splineToConstantHeading( new Vector2d(44,-46),Math.PI*1.5,new TranslationalVelConstraint(80.0));
 
 
 
@@ -479,6 +477,7 @@ public class RedSideAuto extends LinearOpMode {
         Action Benopos2;
         Action Benopos3;
         Action Third;
+        Action tab1pos;
         //trajectoryActionChosen = tab1.build();
         trajectoryActionChosen2 = tab2.build();
         trajectoryActionChosen3 = ForthSample.build();
@@ -489,6 +488,7 @@ public class RedSideAuto extends LinearOpMode {
         Middle = Tomid.build();
         Middle3 = Tomid3.build();
         Middle4 = Tomid4.build();
+        tab1pos = tab1.build();
 
         Benopos1 = Tobeno1.build();
         Benopos2 = Tobeno2.build();
@@ -552,22 +552,22 @@ public class RedSideAuto extends LinearOpMode {
                         new ParallelAction(
                                 gripper.pushUp(),//Deposit Gripper
                                 lift.liftDown(),
-                                new SleepAction(0.45),
+                                new SleepAction(0.4),
                                 mission.releases()),// release gripper for hang
 
                         new ParallelAction(
                                 gripper.pushUp(),
-                                tab1),
+                                tab1pos),
 
                         //----------------------------------------------------------------
                         slide.full(),//Extend Lower slide for collect second speciment
 
-                        new SleepAction(0.5),
+                        new SleepAction(0.45),
                         new ParallelAction(
                                 mission.set(),
                                 gripper.pushDown()
                         ),
-                        new SleepAction(0.38),
+                        new SleepAction(0.35),
                         gripper.midUp(),
                         new SleepAction(0.02),
 //
@@ -577,16 +577,15 @@ public class RedSideAuto extends LinearOpMode {
                                 rot.up()),
 
 
-
-                        new SleepAction(0.356),
-                        mission.mid(),
-                        new SleepAction(0.25),
+                        new SleepAction(0.35),
 
 
                         new ParallelAction(
+                                Middle2,//hang third speciment
+                                mission.mid(),
+                                new SleepAction(0.2),
                                 mission.grip(),
-                                lift.liftUp(),// faster place specimen
-                                Middle2//hang third speciment
+                                lift.liftUp()// faster place specimen
                         ),
 
                         new ParallelAction(
@@ -594,7 +593,7 @@ public class RedSideAuto extends LinearOpMode {
                                 rot.down(),
                                 lift.liftDown(),
                                 gripper.pushUp()),
-                        new SleepAction(0.26),
+                        new SleepAction(0.15),
                         Benopos1,
                         //back to beno for 3 speciment
 
@@ -602,9 +601,9 @@ public class RedSideAuto extends LinearOpMode {
                         //-----------------------------------------------------------------
                         slide.full(),//Extend Lower slide for collect third speciment
 
-                        new SleepAction(0.5),
+                        new SleepAction(0.435),
                         gripper.pushDown(),
-                        new SleepAction(0.4),
+                        new SleepAction(0.35),
                         gripper.midUp(),
                         new SleepAction(0.02),
 //
@@ -633,16 +632,16 @@ public class RedSideAuto extends LinearOpMode {
                         //-------------------------------------------------------------------
                         slide.full(),//slide for collect forth speciment
 
-                        new SleepAction(0.5),
+                        new SleepAction(0.435),
                         gripper.pushDown(),
                         gripper.pushDown(),
-                        new SleepAction(0.4),
+                        new SleepAction(0.35),
                         gripper.midUp(),
                         new SleepAction(0.15),
 //
                         new ParallelAction(
                                 slide.back(),
-                                new SleepAction(0.3),
+                                new SleepAction(0.25),
                                 rot.up()),
                         new SleepAction(0.4),
                         mission.mid(),
@@ -659,10 +658,10 @@ public class RedSideAuto extends LinearOpMode {
                                 mission.releases(),
                                 rot.down(),
                                 lift.liftDown()),
-                        new ParallelAction(
-                                Benopos3,
-                                slide.full()
-                        ),
+//                        new ParallelAction(
+//                                Benopos3,
+//                                slide.full()
+//                        ),
 
                        new SleepAction(0.5)
                 )
