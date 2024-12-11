@@ -66,7 +66,7 @@ public class RedSideAuto extends LinearOpMode {
 
 
                 packet.put("liftPos", posL);
-                if (posL < LiftReference +925) {
+                if (posL < LiftReference +890) {
                     return true;
                 } else {
                     liftL.setPower(0.1);
@@ -99,7 +99,7 @@ public class RedSideAuto extends LinearOpMode {
                 telemetry.update();
 
                 packet.put("liftPos", posL);
-                if (posL < LiftReference +925) {
+                if (posL < LiftReference +890) {
                     return true;
                 } else {
                     liftL.setPower(0.1);
@@ -131,8 +131,8 @@ public class RedSideAuto extends LinearOpMode {
                 if (pos > 400) {
                     return true;
                 } else {
-                    liftR.setPower(0.04);
-                    liftL.setPower(-0.04);
+                    liftR.setPower(0.055);
+                    liftL.setPower(-0.055);
                     return false;
                 }
             }
@@ -176,7 +176,7 @@ public class RedSideAuto extends LinearOpMode {
                 sleep(100);
                 gripper2.setPosition(0.835);
                 sleep(325);
-                S0.setPosition(0.65);
+                S0.setPosition(1);
                 Smid.setPosition(0.45);
                 SR.setPosition(1);
                 SL.setPosition(0);
@@ -199,11 +199,11 @@ public class RedSideAuto extends LinearOpMode {
         public class Mid implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                gripper2.setPosition(0.2);
+                gripper2.setPosition(0.65);
 
-                Smid.setPosition(0.33);
-                SR.setPosition(0.335);
-                SL.setPosition(0.665);
+                Smid.setPosition(0.31);
+                SR.setPosition(0.31);
+                SL.setPosition(0.69);
                 gripper2.setPosition(0.2);
                 return false;
             }
@@ -224,7 +224,7 @@ public class RedSideAuto extends LinearOpMode {
         public class MidUP implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                gripper.setPosition(0.76);
+                gripper.setPosition(0.7);
                 return false;
             }
         }
@@ -235,7 +235,7 @@ public class RedSideAuto extends LinearOpMode {
         public class PushDown implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                gripper.setPosition(1);
+                gripper.setPosition(0.54);
                 return false;
             }
         }
@@ -245,7 +245,7 @@ public class RedSideAuto extends LinearOpMode {
         public class PushUp implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                gripper.setPosition(0.59);
+                gripper.setPosition(1);
                 return false;
             }
         }
@@ -308,7 +308,7 @@ public class RedSideAuto extends LinearOpMode {
         public class Back implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                slide.setPosition(0.51);
+                slide.setPosition(0.515);
                 return false;
             }
         }
@@ -365,16 +365,17 @@ public class RedSideAuto extends LinearOpMode {
     public void runOpMode() {
         Pose2d initialPose = new Pose2d(26, -63, Math.toRadians(0));
         Pose2d second = new Pose2d(0,-35.5,Math.PI*3/2);
-        Pose2d third = new Pose2d(44, -46, Math.PI*3/2);
+        Pose2d third = new Pose2d(44, -48, Math.PI*3/2);
         Pose2d benopos1 =  new Pose2d(3,-35.8,Math.PI*3/2);
-        Pose2d benopos2 =  new Pose2d(0,-38.8,Math.PI*3/2);
-        Pose2d benopos3 =  new Pose2d(4,-35.8,Math.PI*3/2);
+        Pose2d benopos2 =  new Pose2d(0,-35.8,Math.PI*3/2);
+        Pose2d benopos3 =  new Pose2d(-4,-35.8,Math.PI*3/2);
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, initialPose);
         Gripper gripper = new Gripper(hardwareMap);
         Slide slide = new Slide(hardwareMap);
         Rot rot = new Rot(hardwareMap);
         Lift lift = new Lift(hardwareMap);
         Mission mission = new Mission(hardwareMap);
+        GripperRot gripperRot = new GripperRot(hardwareMap);
         // vision here that outputs position
 
 
@@ -385,14 +386,19 @@ public class RedSideAuto extends LinearOpMode {
         TrajectoryActionBuilder Tomid = drive.actionBuilder (initialPose)
                 .splineToLinearHeading( new Pose2d(0,-35.5,Math.PI*3/2),Math.PI/1.5,new TranslationalVelConstraint(45.5));
 
+
         TrajectoryActionBuilder tab1 = drive.actionBuilder (second)
-                .splineToSplineHeading(new Pose2d(28.5,-37.5,Math.PI*0),Math.PI*2,new TranslationalVelConstraint(50.5))
-                .splineToConstantHeading(new Vector2d(34,-12.5),Math.PI/3)//1
-                .splineToConstantHeading(new Vector2d(48.5,-51),Math.PI*3/2,null,new ProfileAccelConstraint(-30,70))
-//                .new com.acmerobotics.roadrunner.VelConstraint()
-                .splineToConstantHeading(new Vector2d(42,-12.5),Math.PI/3,new TranslationalVelConstraint(45))//2
-                .splineToConstantHeading(new Vector2d(57,-51),Math.PI*3/2,null,new ProfileAccelConstraint(-30,70))
-                .splineToSplineHeading(new Pose2d(44,-46,Math.PI*3/2),Math.PI*0.15,new TranslationalVelConstraint(65))
+                .splineToSplineHeading(new Pose2d(28.5,-37.5,Math.PI*0),Math.PI*2,new TranslationalVelConstraint(45.5))
+                .splineToConstantHeading(new Vector2d(30,-20),Math.PI/3)//1
+                .splineToConstantHeading(new Vector2d(40,-15),Math.PI/3)//1
+                .splineToConstantHeading(new Vector2d(48.5,-51),Math.PI*3/2,null,new ProfileAccelConstraint(-30,60))
+
+
+
+                .splineToConstantHeading(new Vector2d(35,-17),Math.PI/3)
+                .splineToConstantHeading(new Vector2d(45,-15),Math.PI/3,new TranslationalVelConstraint(45))//2
+                .splineToConstantHeading(new Vector2d(57,-51),Math.PI*3/2,null,new ProfileAccelConstraint(-30,60))
+                .splineToSplineHeading(new Pose2d(44,-48,Math.PI*3/2),Math.PI*0.15,new TranslationalVelConstraint(65))
                 .waitSeconds(0.2);
 
                 //.build();
@@ -422,16 +428,16 @@ public class RedSideAuto extends LinearOpMode {
 
 
         TrajectoryActionBuilder Tobeno1 = drive.actionBuilder (benopos1)
-                .splineToConstantHeading( new Vector2d(44,-46),Math.PI*1.5,new TranslationalVelConstraint(80.0));
+                .splineToConstantHeading( new Vector2d(44,-48),Math.PI*1.5,new TranslationalVelConstraint(85.0));
 
 
 
         TrajectoryActionBuilder Tobeno2 = drive.actionBuilder (benopos2)
-                .splineToConstantHeading( new Vector2d(44,-46),Math.PI*1.5,new TranslationalVelConstraint(80.0));
+                .splineToConstantHeading( new Vector2d(44,-48),Math.PI*1.5,new TranslationalVelConstraint(85.0));
 
 
         TrajectoryActionBuilder Tobeno3 = drive.actionBuilder (benopos3)
-                .splineToConstantHeading( new Vector2d(44,-46),Math.PI*1.5,new TranslationalVelConstraint(80.0));
+                .splineToConstantHeading( new Vector2d(44,-48),Math.PI*1.5,new TranslationalVelConstraint(85.0));
 
 
 
@@ -448,10 +454,11 @@ public class RedSideAuto extends LinearOpMode {
                 .waitSeconds(0.1225)
                 .splineToSplineHeading( new Pose2d(-58,-31,-Math.PI/2),Math.PI/2);
         // actions that need to happen on init; for instance, a claw tightening.
+        Actions.runBlocking(mission.set());
         Actions.runBlocking(gripper.pushUp());
         Actions.runBlocking(slide.back());
         Actions.runBlocking(rot.down());
-        Actions.runBlocking(mission.set());
+        Actions.runBlocking(gripperRot.zero());
         //Actions.runBlocking(lift.liftUp());
         /*while (!isStopRequested() && !opModeIsActive()) {
             int position = visionOutputPosition;
@@ -552,7 +559,7 @@ public class RedSideAuto extends LinearOpMode {
                         new ParallelAction(
                                 gripper.pushUp(),//Deposit Gripper
                                 lift.liftDown(),
-                                new SleepAction(0.4),
+                                new SleepAction(0.25),
                                 mission.releases()),// release gripper for hang
 
                         new ParallelAction(
@@ -567,7 +574,7 @@ public class RedSideAuto extends LinearOpMode {
                                 mission.set(),
                                 gripper.pushDown()
                         ),
-                        new SleepAction(0.35),
+                        new SleepAction(0.25),
                         gripper.midUp(),
                         new SleepAction(0.02),
 //
@@ -577,7 +584,7 @@ public class RedSideAuto extends LinearOpMode {
                                 rot.up()),
 
 
-                        new SleepAction(0.35),
+                        new SleepAction(0.3),
 
 
                         new ParallelAction(
@@ -601,9 +608,12 @@ public class RedSideAuto extends LinearOpMode {
                         //-----------------------------------------------------------------
                         slide.full(),//Extend Lower slide for collect third speciment
 
-                        new SleepAction(0.435),
-                        gripper.pushDown(),
-                        new SleepAction(0.35),
+                        new SleepAction(0.45),
+                        new ParallelAction(
+                                mission.set(),
+                                gripper.pushDown()
+                        ),
+                        new SleepAction(0.3),
                         gripper.midUp(),
                         new SleepAction(0.02),
 //
@@ -612,7 +622,7 @@ public class RedSideAuto extends LinearOpMode {
                                 new SleepAction(0.3),
                                 rot.up()),
 
-                        new SleepAction(0.2),
+                        new SleepAction(0.3),
                         mission.mid(),
                         new SleepAction(0.25),
                         new ParallelAction(
@@ -632,10 +642,12 @@ public class RedSideAuto extends LinearOpMode {
                         //-------------------------------------------------------------------
                         slide.full(),//slide for collect forth speciment
 
-                        new SleepAction(0.435),
-                        gripper.pushDown(),
-                        gripper.pushDown(),
-                        new SleepAction(0.35),
+                        new SleepAction(0.45),
+                        new ParallelAction(
+                                mission.set(),
+                                gripper.pushDown()
+                        ),
+                        new SleepAction(0.3),
                         gripper.midUp(),
                         new SleepAction(0.15),
 //
@@ -643,7 +655,7 @@ public class RedSideAuto extends LinearOpMode {
                                 slide.back(),
                                 new SleepAction(0.25),
                                 rot.up()),
-                        new SleepAction(0.4),
+                        new SleepAction(0.38),
                         mission.mid(),
                         new SleepAction(0.25),
 
@@ -653,11 +665,11 @@ public class RedSideAuto extends LinearOpMode {
                                 lift.liftUp2(),// faster place specimen
                                 Middle4//hang forth speciment
                         ),
-                        new SleepAction(0.12),
-                        new ParallelAction(
-                                mission.releases(),
-                                rot.down(),
-                                lift.liftDown()),
+//                        new SleepAction(0.12),
+//                        new ParallelAction(
+//                                mission.releases(),
+//                                rot.down(),
+//                                lift.liftDown()),
 //                        new ParallelAction(
 //                                Benopos3,
 //                                slide.full()

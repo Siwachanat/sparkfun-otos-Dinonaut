@@ -408,10 +408,10 @@ public class YellowSideAuto extends LinearOpMode {
     public void runOpMode() {
         Pose2d initialPose = new Pose2d(-38.5, -61.5, Math.toRadians(0));
         Pose2d second = new Pose2d(-48,-49,Math.PI/4.3);
-        Pose2d second2 = new Pose2d(-47.5,-45,Math.PI/2);
-        Pose2d Third = new Pose2d(-57,-45.5,Math.PI/2);
+        Pose2d second2 = new Pose2d(-47.5,-43,Math.PI/2);
+        Pose2d Third = new Pose2d(-57,-43,Math.PI/2);
         Pose2d Forth = new Pose2d(-52.75,-28,Math.PI+0);
-        Pose2d sec2 = new Pose2d(-49.5,-50,Math.PI/4);
+        Pose2d sec2 = new Pose2d(-49.5,-49,Math.PI/4);
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, initialPose);
         Gripper gripper = new Gripper(hardwareMap);
         Slide slide = new Slide(hardwareMap);
@@ -425,13 +425,13 @@ public class YellowSideAuto extends LinearOpMode {
 
 
         TrajectoryActionBuilder firstspec1 = drive.actionBuilder(second)
-                .splineToLinearHeading(new Pose2d(-47.5,-45,Math.PI/2),-Math.PI*2,new TranslationalVelConstraint(50.0));
+                .splineToLinearHeading(new Pose2d(-47.5,-43,Math.PI/2),-Math.PI*2,new TranslationalVelConstraint(50.0));
 
         TrajectoryActionBuilder firstspec2 = drive.actionBuilder(second2)
                 .splineToLinearHeading(new Pose2d(-49.5,-49,Math.PI/4),-Math.PI*2);//turn to put in to the basket
 
         TrajectoryActionBuilder tab3 = drive.actionBuilder(sec2)
-                .splineToLinearHeading(new Pose2d(-57,-45.5,Math.PI/2),Math.PI*2,new TranslationalVelConstraint(55.0));//go get second spec
+                .splineToLinearHeading(new Pose2d(-57,-43,Math.PI/2),Math.PI*2,new TranslationalVelConstraint(55.0));//go get second spec
 
         TrajectoryActionBuilder tab4 = drive.actionBuilder(Third)
                 .splineToLinearHeading(new Pose2d(-49.5,-50,Math.PI/4),Math.PI*2);//return to basket
@@ -581,7 +581,7 @@ public class YellowSideAuto extends LinearOpMode {
                                 gripperRot.zero(),
                                 new SleepAction(0.2),
                                 rot.up()),
-                        new SleepAction(0.3),
+                        new SleepAction(0.425),
                         mission.mid(),
                         new SleepAction(0.2),
                         new ParallelAction(
