@@ -124,7 +124,7 @@ public class ATeleopManual extends LinearOpMode {
             } else if (gamepad1.dpad_down) {
                 S1.setPosition(0.15);
                 S0.setPosition(0.55);
-                Thread.sleep(200);
+                Thread.sleep(320);
                 S0.setPosition(0.75);
                 S5.setPosition(0.53);
                 Thread.sleep(100);
@@ -134,9 +134,9 @@ public class ATeleopManual extends LinearOpMode {
                 S4.setPosition(0.5);
             }
            if (gamepad2.dpad_left) {
-                S4.setPosition(0.975);
+                S4.setPosition(0.97);
             } else if (gamepad2.dpad_right) {
-                S4.setPosition(0.025);
+                S4.setPosition(0.5);
             }
             // Adjust Picker Position
             if (gamepad1.dpad_left && !lastPressDPadLeft) {
@@ -181,6 +181,10 @@ public class ATeleopManual extends LinearOpMode {
                 Thread.sleep(200);
                 S1.setPosition(0.84);
                 S4.setPosition(0.5);
+            }else if (gamepad2.left_bumper) {
+                Gripper.setPosition(0.85);
+            } else if (gamepad2.right_bumper){
+                Gripper.setPosition(0.65);
             } else if (gamepad1.a || gamepad2.a) {
                 Gripper.setPosition(0.49);
                 SL.setPosition(0);
