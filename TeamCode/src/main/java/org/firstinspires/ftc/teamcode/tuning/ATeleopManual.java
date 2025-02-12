@@ -123,13 +123,13 @@ public class ATeleopManual extends LinearOpMode {
             if (gamepad1.dpad_up) {
                 S0.setPosition(1);
             } else if (gamepad1.dpad_down) {
-                S1.setPosition(1);
                 S0.setPosition(0.52);
                 Thread.sleep(245);
                 S0.setPosition(0.875);
                 S5.setPosition(0.125);
+                Thread.sleep(50);
                 S1.setPosition(0);
-                S4.setPosition(0.5);
+                S4.setPosition(0.97);
             }
            if (gamepad2.dpad_left) {
                 S4.setPosition(0.97);
@@ -168,13 +168,12 @@ public class ATeleopManual extends LinearOpMode {
             LiftReference = liftL.getCurrentPosition();
 
             if (gamepad1.left_bumper) {
-                S1.setPosition(1);
+                S1.setPosition(0.57);
                 S0.setPosition(1);
                 Thread.sleep(100);
-                S5.setPosition(0.525);
+                S5.setPosition(0.55);
             } else if (gamepad1.right_bumper){
                 S5.setPosition(0);
-                S1.setPosition(1);
                 Thread.sleep(200);
                 S1.setPosition(0);
                 S4.setPosition(0.5);
@@ -183,9 +182,9 @@ public class ATeleopManual extends LinearOpMode {
             } else if (gamepad2.right_bumper){
                 Gripper.setPosition(0.115);
             } else if (gamepad1.a || gamepad2.a) {
-                Gripper.setPosition(0.75);
-                SR.setPosition(0.25);
-                SL.setPosition(0.75);
+                Gripper.setPosition(0.8);
+                SR.setPosition(0.15);
+                SL.setPosition(0.85);
                 Smid.setPosition(0.35);
                 liftL.setPower(-1);
                 liftR.setPower(1);
