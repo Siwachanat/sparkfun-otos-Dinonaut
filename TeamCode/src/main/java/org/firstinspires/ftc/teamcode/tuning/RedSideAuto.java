@@ -240,7 +240,7 @@ public class RedSideAuto extends LinearOpMode {
         public class SlideIN implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                S5.setPosition(0.2);
+                S5.setPosition(0.15);
                 S1.setPosition(0);
                 S4.setPosition(0.97);
                 return false;
@@ -267,17 +267,38 @@ public class RedSideAuto extends LinearOpMode {
 
 
         TrajectoryActionBuilder Tomid = drive.actionBuilder (initialPose)
-                .lineToXConstantHeading(-63+30, new TranslationalVelConstraint(100));
+                .splineToSplineHeading(new Pose2d(-63+30,0,Math.PI*2),Math.PI*2,new TranslationalVelConstraint(70));
         TrajectoryActionBuilder Tosam1 = drive.actionBuilder (second)
-                .lineToXConstantHeading(-63+17, new TranslationalVelConstraint(85.0))
-                .splineToSplineHeading(new Pose2d(-39,-32,-Math.PI/3),Math.PI*3/2,new TranslationalVelConstraint(60))
-                .waitSeconds(0.01)
-                .splineToSplineHeading(new Pose2d(-46.5,-39,-Math.PI/2.68),Math.PI*3/2,new TranslationalVelConstraint(60))
-                .waitSeconds(0.01)
-                .splineToSplineHeading(new Pose2d(-37.5,-35,-Math.PI/3),-Math.PI*3/2,new TranslationalVelConstraint(60));
+                .splineToConstantHeading(new Vector2d(-63+13,-30),Math.PI*2,new TranslationalVelConstraint(40))
+
+                .splineToConstantHeading(new Vector2d(-20,-40),Math.PI*3/2,new TranslationalVelConstraint(39))
+                .splineToConstantHeading(new Vector2d(-19,-44),Math.PI*3/2,new TranslationalVelConstraint(43))
+                .splineToConstantHeading(new Vector2d(-52,-48),Math.PI*3/2,new TranslationalVelConstraint(48))
+
+                .splineToConstantHeading(new Vector2d(-20,-40),Math.PI*3/2,new TranslationalVelConstraint(30))
+                .splineToConstantHeading(new Vector2d(-13,-51),Math.PI*3/2,new TranslationalVelConstraint(40))
+                .splineToConstantHeading(new Vector2d(-52,-50),Math.PI*3/2,new TranslationalVelConstraint(48))
+
+                //.splineToConstantHeading(new Vector2d(-9,-50),Math.PI*3/2,new TranslationalVelConstraint(20))
+                .splineToConstantHeading(new Vector2d(-20,-45),Math.PI*3/2,new TranslationalVelConstraint(30))
+                .splineToConstantHeading(new Vector2d(-13,-55),Math.PI*3/2,new TranslationalVelConstraint(35))
+                .splineToConstantHeading(new Vector2d(-57,-60),Math.PI*3/2,new TranslationalVelConstraint(35));
+                //.splineToSplineHeading(new Pose2d(-63+30,0,Math.PI*2),Math.PI*2,new TranslationalVelConstraint(60));
 
 
+                /*.setTangent(Math.PI*3/2)
+                .splineToConstantHeading(new Vector2d(-20,-40),Math.PI*3/2,new TranslationalVelConstraint(80))
+                .splineToConstantHeading(new Vector2d(-12,-51),Math.PI*3/2,new TranslationalVelConstraint(50))
 
+                .splineToSplineHeading(new Pose2d(-52,-52.5,Math.PI*2),Math.PI*3/2,new TranslationalVelConstraint(40))
+                .splineToSplineHeading(new Pose2d(-20,-50,Math.PI*2),Math.PI*3/2,null,new ProfileAccelConstraint(-10,10))
+                .splineToSplineHeading(new Pose2d(-12,-62,Math.PI*2),Math.PI*3/2,new TranslationalVelConstraint(50))
+
+                .splineToSplineHeading(new Pose2d(-50,-62,Math.PI*2),Math.PI*2,new TranslationalVelConstraint(50));*/
+
+
+        Actions.runBlocking(mission.set());
+        Actions.runBlocking(mission.slideIN());
 
         Actions.runBlocking(mission.set());
         Actions.runBlocking(mission.slideIN());
@@ -305,9 +326,7 @@ public class RedSideAuto extends LinearOpMode {
                         new ParallelAction(
                             mission.releases(),
                             new SleepAction(0.1),
-                            Sam1,
-                            new SleepAction(5.5),
-                            mission.slideFullUP()
+                            Sam1
                                 ),
                         new SleepAction(2)
 
