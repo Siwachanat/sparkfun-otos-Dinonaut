@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.CompositeVelConstraint;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ProfileAccelConstraint;
@@ -257,7 +258,7 @@ public class RedSideAuto extends LinearOpMode {
     @Override
     public void runOpMode() {
         Pose2d initialPose = new Pose2d(-63, 0, Math.toRadians(0));
-        Pose2d second = new Pose2d(-63+30,0,Math.toRadians(0));
+        Pose2d second = new Pose2d(-63+31.5,0,Math.toRadians(0));
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, initialPose);
         Lift lift = new Lift(hardwareMap);
         Mission mission = new Mission(hardwareMap);
@@ -267,22 +268,25 @@ public class RedSideAuto extends LinearOpMode {
 
 
         TrajectoryActionBuilder Tomid = drive.actionBuilder (initialPose)
-                .splineToSplineHeading(new Pose2d(-63+30,0,Math.PI*2),Math.PI*2,new TranslationalVelConstraint(70));
+                .splineToSplineHeading(new Pose2d(-63+31.5,0,Math.PI*2),Math.PI*2,null,new ProfileAccelConstraint(-60,100));
         TrajectoryActionBuilder Tosam1 = drive.actionBuilder (second)
-                .splineToConstantHeading(new Vector2d(-63+13,-30),Math.PI*0.5,new TranslationalVelConstraint(40))
+                //.splineToConstantHeading(new Vector2d(-63+22,0),Math.PI*2,null,new ProfileAccelConstraint(-20,30))
+                //.strafeTo(new Vector2d(-63+25,-30))
+                .splineToConstantHeading(new Vector2d(-63+17.5,-32),-Math.PI*0.5,new TranslationalVelConstraint(70))
 
-                .splineToConstantHeading(new Vector2d(-20,-40),Math.PI*3/2,new TranslationalVelConstraint(39))
-                .splineToConstantHeading(new Vector2d(-15,-44),Math.PI*3/2,new TranslationalVelConstraint(43))
-                .splineToConstantHeading(new Vector2d(-52,-48),Math.PI*3/2,new TranslationalVelConstraint(48))
-
-
-                .splineToConstantHeading(new Vector2d(-13,-45),Math.PI*3/2,new TranslationalVelConstraint(40))
-                .splineToConstantHeading(new Vector2d(-52,-50),Math.PI*3/2,new TranslationalVelConstraint(48))
+                .splineToConstantHeading(new Vector2d(-15,-35),Math.PI*2,new TranslationalVelConstraint(33))
+                .splineToConstantHeading(new Vector2d(-15,-48),-Math.PI*1,new TranslationalVelConstraint(60))
+                .splineToConstantHeading(new Vector2d(-48,-48),Math.PI*2,new TranslationalVelConstraint(33))
 
 
-                .splineToConstantHeading(new Vector2d(-20,-45),Math.PI*3/2,new TranslationalVelConstraint(30))
-                .splineToConstantHeading(new Vector2d(-13,-57),Math.PI*3/2,new TranslationalVelConstraint(35))
-                .splineToConstantHeading(new Vector2d(-57,-62),Math.PI*3/2,new TranslationalVelConstraint(35));
+                .splineToConstantHeading(new Vector2d(-15,-45),Math.PI*2,new TranslationalVelConstraint(33))
+                .splineToConstantHeading(new Vector2d(-15,-56.5),-Math.PI*1,new TranslationalVelConstraint(60))
+                .splineToConstantHeading(new Vector2d(-48,-56.5),Math.PI*2,new TranslationalVelConstraint(33))
+
+
+                .splineToConstantHeading(new Vector2d(-13,-54),Math.PI*2,new TranslationalVelConstraint(33))
+                .splineToConstantHeading(new Vector2d(-13,-62.5),-Math.PI*1,new TranslationalVelConstraint(60))
+                .splineToConstantHeading(new Vector2d(-48,-62.5),Math.PI*2,new TranslationalVelConstraint(45));
 
 
 
