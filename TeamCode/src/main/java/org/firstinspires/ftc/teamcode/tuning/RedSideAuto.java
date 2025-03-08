@@ -269,21 +269,21 @@ public class RedSideAuto extends LinearOpMode {
         TrajectoryActionBuilder Tomid = drive.actionBuilder (initialPose)
                 .splineToSplineHeading(new Pose2d(-63+30,0,Math.PI*2),Math.PI*2,new TranslationalVelConstraint(70));
         TrajectoryActionBuilder Tosam1 = drive.actionBuilder (second)
-                .splineToConstantHeading(new Vector2d(-63+13,-30),Math.PI*2,new TranslationalVelConstraint(40))
+                .splineToConstantHeading(new Vector2d(-63+13,-30),Math.PI*0.5,new TranslationalVelConstraint(40))
 
                 .splineToConstantHeading(new Vector2d(-20,-40),Math.PI*3/2,new TranslationalVelConstraint(39))
-                .splineToConstantHeading(new Vector2d(-19,-44),Math.PI*3/2,new TranslationalVelConstraint(43))
+                .splineToConstantHeading(new Vector2d(-15,-44),Math.PI*3/2,new TranslationalVelConstraint(43))
                 .splineToConstantHeading(new Vector2d(-52,-48),Math.PI*3/2,new TranslationalVelConstraint(48))
 
-                .splineToConstantHeading(new Vector2d(-20,-40),Math.PI*3/2,new TranslationalVelConstraint(30))
-                .splineToConstantHeading(new Vector2d(-13,-51),Math.PI*3/2,new TranslationalVelConstraint(40))
+
+                .splineToConstantHeading(new Vector2d(-13,-45),Math.PI*3/2,new TranslationalVelConstraint(40))
                 .splineToConstantHeading(new Vector2d(-52,-50),Math.PI*3/2,new TranslationalVelConstraint(48))
 
-                //.splineToConstantHeading(new Vector2d(-9,-50),Math.PI*3/2,new TranslationalVelConstraint(20))
+
                 .splineToConstantHeading(new Vector2d(-20,-45),Math.PI*3/2,new TranslationalVelConstraint(30))
-                .splineToConstantHeading(new Vector2d(-13,-55),Math.PI*3/2,new TranslationalVelConstraint(35))
-                .splineToConstantHeading(new Vector2d(-57,-60),Math.PI*3/2,new TranslationalVelConstraint(35));
-                //.splineToSplineHeading(new Pose2d(-63+30,0,Math.PI*2),Math.PI*2,new TranslationalVelConstraint(60));
+                .splineToConstantHeading(new Vector2d(-13,-57),Math.PI*3/2,new TranslationalVelConstraint(35))
+                .splineToConstantHeading(new Vector2d(-57,-62),Math.PI*3/2,new TranslationalVelConstraint(35));
+
 
 
                 /*.setTangent(Math.PI*3/2)
