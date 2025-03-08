@@ -183,12 +183,13 @@ public class RedSideAuto extends LinearOpMode {
         public class Grip implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                SR.setPosition(0.19);
-                SL.setPosition(0.81);
-                sleep(350);
-                Gripper.setPosition(0.8);
-                Smid.setPosition(0.65);
-                SRG.setPosition(0.15);
+                Gripper.setPosition(0.1);
+                sleep(100);
+                Smid.setPosition(0.5);
+                sleep(100);
+                SL.setPosition(0.320);
+                SR.setPosition(0.680);
+                Gripper.setPosition(0.175);
                 return false;
             }
         }
@@ -259,34 +260,43 @@ public class RedSideAuto extends LinearOpMode {
     public void runOpMode() {
         Pose2d initialPose = new Pose2d(-63, 0, Math.toRadians(0));
         Pose2d second = new Pose2d(-63+31.5,0,Math.toRadians(0));
+        Pose2d third = new Pose2d(-55.6,-48,Math.toRadians(0));
+        Pose2d forth = new Pose2d(-63+33,-2,Math.toRadians(0));
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, initialPose);
         Lift lift = new Lift(hardwareMap);
         Mission mission = new Mission(hardwareMap);
 
 
-
-
-
         TrajectoryActionBuilder Tomid = drive.actionBuilder (initialPose)
-                .splineToSplineHeading(new Pose2d(-63+31.5,0,Math.PI*2),Math.PI*2,null,new ProfileAccelConstraint(-60,100));
+                .splineToSplineHeading(new Pose2d(-63+31.5,0,Math.PI*2),Math.PI*2,null,new ProfileAccelConstraint(-100,200));
         TrajectoryActionBuilder Tosam1 = drive.actionBuilder (second)
-                //.splineToConstantHeading(new Vector2d(-63+22,0),Math.PI*2,null,new ProfileAccelConstraint(-20,30))
-                //.strafeTo(new Vector2d(-63+25,-30))
-                .splineToConstantHeading(new Vector2d(-63+17.5,-32),-Math.PI*0.5,new TranslationalVelConstraint(70))
+                .splineToConstantHeading(new Vector2d(-63+26,0),Math.PI*2,null,new ProfileAccelConstraint(-30,45))
+                .splineToConstantHeading(new Vector2d(-63+20,-28.5),-Math.PI*0.5,new TranslationalVelConstraint(80))
 
-                .splineToConstantHeading(new Vector2d(-15,-35),Math.PI*2,new TranslationalVelConstraint(33))
-                .splineToConstantHeading(new Vector2d(-15,-48),-Math.PI*1,new TranslationalVelConstraint(60))
-                .splineToConstantHeading(new Vector2d(-48,-48),Math.PI*2,new TranslationalVelConstraint(33))
+                .splineToConstantHeading(new Vector2d(-19.5,-35),Math.PI*2,new TranslationalVelConstraint(35.5))
+                .splineToConstantHeading(new Vector2d(-19.5,-48),-Math.PI*1,new TranslationalVelConstraint(60))
+                .splineToConstantHeading(new Vector2d(-40,-48),Math.PI*2,new TranslationalVelConstraint(40))
+                .splineToConstantHeading(new Vector2d(-55.6,-48),Math.PI*2,new TranslationalVelConstraint(30));
+
+        TrajectoryActionBuilder Tosam2 = drive.actionBuilder (third)
+
+                .splineToConstantHeading(new Vector2d(-19.5,-45),Math.PI*2,null,new ProfileAccelConstraint(-50,100))
+                .splineToConstantHeading(new Vector2d(-19.5,-56.5),-Math.PI*1,new TranslationalVelConstraint(80))
+                .splineToConstantHeading(new Vector2d(-46,-56.5),Math.PI*2,new TranslationalVelConstraint(33))
 
 
-                .splineToConstantHeading(new Vector2d(-15,-45),Math.PI*2,new TranslationalVelConstraint(33))
-                .splineToConstantHeading(new Vector2d(-15,-56.5),-Math.PI*1,new TranslationalVelConstraint(60))
-                .splineToConstantHeading(new Vector2d(-48,-56.5),Math.PI*2,new TranslationalVelConstraint(33))
+                .splineToConstantHeading(new Vector2d(-17,-54),Math.PI*2,new TranslationalVelConstraint(33))
+                .splineToConstantHeading(new Vector2d(-17,-62.25),-Math.PI*1,new TranslationalVelConstraint(80))
+                .splineToConstantHeading(new Vector2d(-60,-62.25),Math.PI*2,new TranslationalVelConstraint(90))
 
 
-                .splineToConstantHeading(new Vector2d(-13,-54),Math.PI*2,new TranslationalVelConstraint(33))
-                .splineToConstantHeading(new Vector2d(-13,-62.5),-Math.PI*1,new TranslationalVelConstraint(60))
-                .splineToConstantHeading(new Vector2d(-48,-62.5),Math.PI*2,new TranslationalVelConstraint(45));
+                .splineToConstantHeading(new Vector2d(-63+25,-2),Math.PI*0.5,new TranslationalVelConstraint(100))
+                .splineToConstantHeading(new Vector2d(-63+33,-2),Math.PI*2,new TranslationalVelConstraint(90));
+
+        TrajectoryActionBuilder Tosam3 = drive.actionBuilder (forth)
+                .splineToConstantHeading(new Vector2d(-63+26,0),Math.PI*2,null,new ProfileAccelConstraint(-30,55))
+                .splineToConstantHeading(new Vector2d(-63+13,-40),-Math.PI*0.5,new TranslationalVelConstraint(80));
+
 
 
 
@@ -310,10 +320,14 @@ public class RedSideAuto extends LinearOpMode {
 
         Action Middle;
         Action Sam1;
+        Action Sam2;
+        Action Sam3;
 
 
         Middle = Tomid.build();
         Sam1 = Tosam1.build();
+        Sam2 = Tosam2.build();
+        Sam3 = Tosam3.build();
 
 
 
@@ -328,11 +342,22 @@ public class RedSideAuto extends LinearOpMode {
                                 Middle//first speciment Trjectory Moving Path
                                 ),
                         new ParallelAction(
-                            mission.releases(),
-                            new SleepAction(0.1),
-                            Sam1
+                                mission.releases(),
+                                new SleepAction(0.1),
+                                Sam1
+                        ),
+                        new ParallelAction(
+                                new SequentialAction(
+                                    mission.grip(),
+                                    new SleepAction(0.15)
                                 ),
-                        new SleepAction(2)
+                                Sam2
+                        ),
+                        new ParallelAction(
+                                Sam3,
+                                mission.releases()
+                        ),
+                        new SleepAction(1)
 
                 )
         );
