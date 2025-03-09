@@ -260,13 +260,13 @@ public class RedSideAuto extends LinearOpMode {
         Pose2d second = new Pose2d(-63+31.5,0,Math.toRadians(0));
         Pose2d third = new Pose2d(-55.6,-48,Math.toRadians(0));
         Pose2d forth = new Pose2d(-63+33,-3.5,Math.toRadians(0));
-        Pose2d fifth = new Pose2d(-63+6,-40,Math.toRadians(0));
+        Pose2d fifth = new Pose2d(-63+7.15,-40,Math.toRadians(0));
         Pose2d six = new Pose2d(-63+33,3.5,Math.toRadians(0));
         Pose2d sev = new Pose2d(-63+33,-6,Math.toRadians(0));
+        Pose2d exx = new Pose2d(-63+33,6,Math.toRadians(0));
         SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, initialPose);
         Lift lift = new Lift(hardwareMap);
         Mission mission = new Mission(hardwareMap);
-
 
         TrajectoryActionBuilder Tomid = drive.actionBuilder (initialPose)
                 .splineToSplineHeading(new Pose2d(-63+31.5,0,Math.PI*2),Math.PI*2,null,new ProfileAccelConstraint(-100,100));
@@ -282,20 +282,21 @@ public class RedSideAuto extends LinearOpMode {
 
                 .splineToConstantHeading(new Vector2d(-19.5,-45),Math.PI*2,null,new ProfileAccelConstraint(-50,100))
                 .splineToConstantHeading(new Vector2d(-19.5,-56.5),-Math.PI*1,new TranslationalVelConstraint(100))
-                .splineToConstantHeading(new Vector2d(-46,-56.5),Math.PI*2,new TranslationalVelConstraint(27))
+                .splineToConstantHeading(new Vector2d(-46,-56.5),Math.PI*2,null,new ProfileAccelConstraint(-20,60))
 
 
-                .splineToConstantHeading(new Vector2d(-17,-54),Math.PI*2,new TranslationalVelConstraint(27))
+                .splineToConstantHeading(new Vector2d(-17,-54),Math.PI*2,null,new ProfileAccelConstraint(-80,35))
                 .splineToConstantHeading(new Vector2d(-17,-62.25),-Math.PI*1,new TranslationalVelConstraint(100))
-                .splineToConstantHeading(new Vector2d(-62,-62.25),Math.PI*2,new TranslationalVelConstraint(100))
+                .splineToConstantHeading(new Vector2d(-62,-62.25),Math.PI*2,null,new ProfileAccelConstraint(-60,100))
 
 
                 .splineToConstantHeading(new Vector2d(-63+33,-3.5),Math.PI*0.3,new TranslationalVelConstraint(100));
-                //.splineToConstantHeading(new Vector2d(-63+33,-3.5),Math.PI*2,new TranslationalVelConstraint(100));
+        //.splineToConstantHeading(new Vector2d(-63+33,-3.5),Math.PI*2,new TranslationalVelConstraint(100));
+
 
         TrajectoryActionBuilder Tosam3 = drive.actionBuilder (forth)
-                .splineToConstantHeading(new Vector2d(-63+25,0),Math.PI*2,null,new ProfileAccelConstraint(-30,45))
-                .splineToConstantHeading(new Vector2d(-63+75,-40),-Math.PI*0.3,new TranslationalVelConstraint(100));
+                .splineToConstantHeading(new Vector2d(-63+28,0),Math.PI*2,null,new ProfileAccelConstraint(-100,100))
+                .splineToConstantHeading(new Vector2d(-63+7.15,-40),-Math.PI*0.3,new TranslationalVelConstraint(100));
                 //.splineToConstantHeading(new Vector2d(-63+6,-40),Math.PI*2,new TranslationalVelConstraint(27));
 
         TrajectoryActionBuilder Tosam4 = drive.actionBuilder (fifth)
@@ -303,8 +304,8 @@ public class RedSideAuto extends LinearOpMode {
                 //.splineToConstantHeading(new Vector2d(-63+33,3.5),Math.PI*2,new TranslationalVelConstraint(100));
 
         TrajectoryActionBuilder Tosam5 = drive.actionBuilder (six)
-                .splineToConstantHeading(new Vector2d(-63+23,0),Math.PI*2,null,new ProfileAccelConstraint(-30,45))
-                .splineToConstantHeading(new Vector2d(-63+75,-40),-Math.PI*0.3,new TranslationalVelConstraint(100));
+                .splineToConstantHeading(new Vector2d(-63+28,0),Math.PI*2,null,new ProfileAccelConstraint(-100,100))
+                .splineToConstantHeading(new Vector2d(-63+7.15,-40),-Math.PI*0.3,new TranslationalVelConstraint(80));
                 //.splineToConstantHeading(new Vector2d(-63+6,-40),Math.PI*2,new TranslationalVelConstraint(27));
 
         TrajectoryActionBuilder Tosam6 = drive.actionBuilder (fifth)
@@ -314,14 +315,18 @@ public class RedSideAuto extends LinearOpMode {
 
 
         TrajectoryActionBuilder Tosam7 = drive.actionBuilder (sev)
-                .splineToConstantHeading(new Vector2d(-63+25,0),Math.PI*2,null,new ProfileAccelConstraint(-30,45))
-                .splineToConstantHeading(new Vector2d(-63+6.75,-40),-Math.PI*0.3,new TranslationalVelConstraint(100));
+                .splineToConstantHeading(new Vector2d(-63+28,0),Math.PI*2,null,new ProfileAccelConstraint(-100,100))
+                .splineToConstantHeading(new Vector2d(-63+7.15,-40),-Math.PI*0.3,new TranslationalVelConstraint(100));
                 //.splineToConstantHeading(new Vector2d(-63+6,-40),Math.PI*2,new TranslationalVelConstraint(27));
 
         TrajectoryActionBuilder Tosam8 = drive.actionBuilder (fifth)
 
                 .splineToConstantHeading(new Vector2d(-63+25,6),Math.PI*0.5,new TranslationalVelConstraint(100))
                 .splineToConstantHeading(new Vector2d(-63+33,6),Math.PI*2,new TranslationalVelConstraint(100));
+
+        TrajectoryActionBuilder Tosam9 = drive.actionBuilder (exx)
+                .splineToConstantHeading(new Vector2d(-63+28,0),Math.PI*2,null,new ProfileAccelConstraint(-100,100))
+                .splineToConstantHeading(new Vector2d(-63+7.15,-40),-Math.PI*0.3,new TranslationalVelConstraint(100));
 
 
 
@@ -353,6 +358,7 @@ public class RedSideAuto extends LinearOpMode {
         Action Sam6;
         Action Sam7;
         Action Sam8;
+        Action Sam9;
 
 
 
@@ -365,6 +371,7 @@ public class RedSideAuto extends LinearOpMode {
         Sam6 = Tosam6.build();
         Sam7 = Tosam7.build();
         Sam8 = Tosam8.build();
+        Sam9 = Tosam9.build();
 
 
 
@@ -408,7 +415,6 @@ public class RedSideAuto extends LinearOpMode {
                         ),
                         new ParallelAction(
                                 Sam7,
-                                mission.releases(),
                                 mission.releases()
                         ),
                         new ParallelAction(
@@ -416,7 +422,10 @@ public class RedSideAuto extends LinearOpMode {
                                 Sam8
 
                         ),
-                        mission.releases(),
+                        new ParallelAction(
+                                Sam9,
+                                mission.releases()
+                        ),
                         new SleepAction(1)
 
                 )
