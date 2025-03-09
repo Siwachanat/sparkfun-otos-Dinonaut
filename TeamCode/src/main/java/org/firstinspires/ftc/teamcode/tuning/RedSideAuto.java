@@ -274,9 +274,9 @@ public class RedSideAuto extends LinearOpMode {
                 .splineToConstantHeading(new Vector2d(-63+26,0),Math.PI*2,null,new ProfileAccelConstraint(-30,45))
                 .splineToConstantHeading(new Vector2d(-63+20,-28.5),-Math.PI*0.5,new TranslationalVelConstraint(100))
 
-                .splineToConstantHeading(new Vector2d(-19.5,-35),Math.PI*2,new TranslationalVelConstraint(35.5))
+                .splineToConstantHeading(new Vector2d(-19.5,-35),Math.PI*2,new TranslationalVelConstraint(50))
                 .splineToConstantHeading(new Vector2d(-19.5,-48),-Math.PI*1,new TranslationalVelConstraint(100))
-                .splineToConstantHeading(new Vector2d(-55.6,-48),Math.PI*2,new TranslationalVelConstraint(30));
+                .splineToConstantHeading(new Vector2d(-55.6,-48),Math.PI*2,null,new ProfileAccelConstraint(-60,100));
 
         TrajectoryActionBuilder Tosam2 = drive.actionBuilder (third)
 
@@ -287,46 +287,46 @@ public class RedSideAuto extends LinearOpMode {
 
                 .splineToConstantHeading(new Vector2d(-17,-54),Math.PI*2,null,new ProfileAccelConstraint(-80,35))
                 .splineToConstantHeading(new Vector2d(-17,-62.25),-Math.PI*1,new TranslationalVelConstraint(100))
-                .splineToConstantHeading(new Vector2d(-62,-62.25),Math.PI*2,null,new ProfileAccelConstraint(-60,100))
+                .splineToConstantHeading(new Vector2d(-46,-62.25),Math.PI*2,null,new ProfileAccelConstraint(-60,100))
 
 
-                .splineToConstantHeading(new Vector2d(-63+33,-3.5),Math.PI*0.3,new TranslationalVelConstraint(100));
+                .splineToConstantHeading(new Vector2d(-63+33,-3.5),Math.PI*0.25,new TranslationalVelConstraint(100));
         //.splineToConstantHeading(new Vector2d(-63+33,-3.5),Math.PI*2,new TranslationalVelConstraint(100));
 
 
         TrajectoryActionBuilder Tosam3 = drive.actionBuilder (forth)
-                .splineToConstantHeading(new Vector2d(-63+28,0),Math.PI*2,null,new ProfileAccelConstraint(-100,100))
-                .splineToConstantHeading(new Vector2d(-63+7.15,-40),-Math.PI*0.3,new TranslationalVelConstraint(100));
-                //.splineToConstantHeading(new Vector2d(-63+6,-40),Math.PI*2,new TranslationalVelConstraint(27));
+                .splineToConstantHeading(new Vector2d(-63+28,0),Math.PI*2,null,new ProfileAccelConstraint(-45,100))
+                .splineToConstantHeading(new Vector2d(-63+7.15,-40),-Math.PI*0.4,new TranslationalVelConstraint(100));
+                //.splineToConstantHeading(new Vector2d(-63+7.15,-40),Math.PI*2,new TranslationalVelConstraint(27));
 
         TrajectoryActionBuilder Tosam4 = drive.actionBuilder (fifth)
-                .splineToConstantHeading(new Vector2d(-63+33,3.5),Math.PI*0.3,new TranslationalVelConstraint(100));
+                .splineToConstantHeading(new Vector2d(-63+33,3.5),Math.PI*0.4,new TranslationalVelConstraint(100));
                 //.splineToConstantHeading(new Vector2d(-63+33,3.5),Math.PI*2,new TranslationalVelConstraint(100));
 
         TrajectoryActionBuilder Tosam5 = drive.actionBuilder (six)
-                .splineToConstantHeading(new Vector2d(-63+28,0),Math.PI*2,null,new ProfileAccelConstraint(-100,100))
-                .splineToConstantHeading(new Vector2d(-63+7.15,-40),-Math.PI*0.3,new TranslationalVelConstraint(80));
+                .splineToConstantHeading(new Vector2d(-63+28,0),Math.PI*2,null,new ProfileAccelConstraint(-45,100))
+                .splineToConstantHeading(new Vector2d(-63+7.15,-40),-Math.PI*0.4,new TranslationalVelConstraint(100));
                 //.splineToConstantHeading(new Vector2d(-63+6,-40),Math.PI*2,new TranslationalVelConstraint(27));
 
         TrajectoryActionBuilder Tosam6 = drive.actionBuilder (fifth)
 
-                .splineToConstantHeading(new Vector2d(-63+33,-6),Math.PI*0.3,new TranslationalVelConstraint(100));
-                //.splineToConstantHeading(new Vector2d(-63+33,-6),Math.PI*2,new TranslationalVelConstraint(100));
+                .splineToConstantHeading(new Vector2d(-63+28,-6),Math.PI*0.4,new TranslationalVelConstraint(100))
+                .splineToConstantHeading(new Vector2d(-63+33,-6),Math.PI*2,new TranslationalVelConstraint(100));
 
 
         TrajectoryActionBuilder Tosam7 = drive.actionBuilder (sev)
-                .splineToConstantHeading(new Vector2d(-63+28,0),Math.PI*2,null,new ProfileAccelConstraint(-100,100))
-                .splineToConstantHeading(new Vector2d(-63+7.15,-40),-Math.PI*0.3,new TranslationalVelConstraint(100));
+                .splineToConstantHeading(new Vector2d(-63+28,0),Math.PI*2,null,new ProfileAccelConstraint(-45,80))
+                .splineToConstantHeading(new Vector2d(-63+7.15,-40),-Math.PI*0.4,new TranslationalVelConstraint(100));
                 //.splineToConstantHeading(new Vector2d(-63+6,-40),Math.PI*2,new TranslationalVelConstraint(27));
 
         TrajectoryActionBuilder Tosam8 = drive.actionBuilder (fifth)
 
-                .splineToConstantHeading(new Vector2d(-63+25,6),Math.PI*0.5,new TranslationalVelConstraint(100))
+                .splineToConstantHeading(new Vector2d(-63+28,6),Math.PI*0.5,new TranslationalVelConstraint(100))
                 .splineToConstantHeading(new Vector2d(-63+33,6),Math.PI*2,new TranslationalVelConstraint(100));
 
         TrajectoryActionBuilder Tosam9 = drive.actionBuilder (exx)
-                .splineToConstantHeading(new Vector2d(-63+28,0),Math.PI*2,null,new ProfileAccelConstraint(-100,100))
-                .splineToConstantHeading(new Vector2d(-63+7.15,-40),-Math.PI*0.3,new TranslationalVelConstraint(100));
+                .splineToConstantHeading(new Vector2d(-63+28,0),Math.PI*2,null,new ProfileAccelConstraint(-45,80))
+                .splineToConstantHeading(new Vector2d(-63+7.15,-40),-Math.PI*0.5,new TranslationalVelConstraint(100));
 
 
 
