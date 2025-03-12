@@ -132,7 +132,8 @@ public class ATeleopManual extends LinearOpMode {
                 Thread.sleep(245);
                 S0.setPosition(0.875);
                 S5.setPosition(0.2);
-                Thread.sleep(50);
+                S1.setPosition(0.5);
+                Thread.sleep(150);
                 S1.setPosition(0);
                 S4.setPosition(0.97);
             }
@@ -248,11 +249,12 @@ public class ATeleopManual extends LinearOpMode {
             }
 
             ////
-            if(gamepad2.right_bumper){
-                SL.setPosition(0.3);
-                SR.setPosition(0.7);
-            }
-            else if (posL > 2000) {
+//            if(gamepad2.right_bumper){
+//                SL.setPosition(0.3);
+//                SR.setPosition(0.7);
+//            }
+//            else
+            if (posL > 2000) {
                 SRG.setPosition(0.57);
                 Smid.setPosition(0);
                 SR.setPosition(0.5);
