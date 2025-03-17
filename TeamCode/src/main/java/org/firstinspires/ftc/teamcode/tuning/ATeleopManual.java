@@ -185,33 +185,33 @@ public class ATeleopManual extends LinearOpMode {
                 S1.setPosition(0);
                 S4.setPosition(0.5);
             } else if (gamepad2.left_bumper) {
-                SR.setPosition(0.19);
-                SL.setPosition(0.81);
-                Thread.sleep(350);
+                SR.setPosition(0.21);
+                SL.setPosition(0.79);
+                Thread.sleep(300);
                 Gripper.setPosition(0.8);
                 Smid.setPosition(0.65);
                 SRG.setPosition(0.15);
 
             } else if (gamepad2.right_bumper){
-                Gripper.setPosition(0.115);
-            } else if (gamepad1.a || gamepad2.a) {
-//                S5.setPosition(0.1);
-//                SL.setPosition(0.05);
-//                SR.setPosition(0.95);
-//                SRG.setPosition(0.15);
-//                Gripper.setPosition(0.8);
-//                Smid.setPosition(0.25);
-//                S0.setPosition(0.9);
-
-                //get back
-                SRG.setPosition(0.15);
                 Gripper.setPosition(0.8);
-                SR.setPosition(0.19);
-                SL.setPosition(0.81);
+            } else if (gamepad1.b || gamepad2.b){
+                SL.setPosition(0.135);
+                SR.setPosition(0.865);
+                Thread.sleep(50);
+                Gripper.setPosition(0.1);
+                S0.setPosition(1);
+                Thread.sleep(200);
+                SL.setPosition(0.5);
+                SR.setPosition(0.5);
+                // Rot 0
+                SRG.setPosition(0.15);
+
+            }else if (gamepad1.a || gamepad2.a) {
+                SR.setPosition(0.21);
+                SL.setPosition(0.79);
+                Gripper.setPosition(0.8);
                 Smid.setPosition(0.65);
-//                liftL.setPower(-1);
-//                liftR.setPower(1);
-//                Thread.sleep(400);
+                SRG.setPosition(0.15);
             } else if (gamepad1.y || gamepad2.y) {
 //                Gripper.setPosition(0.1);
 //                Thread.sleep(70);
@@ -225,13 +225,34 @@ public class ATeleopManual extends LinearOpMode {
                 //front
                 Gripper.setPosition(0.1);
                 Thread.sleep(100);
-                Smid.setPosition(0.5);
-                Thread.sleep(100);
-                SL.setPosition(0.320);
-                SR.setPosition(0.680);
+                Smid.setPosition(0.6425);
+                SL.setPosition(0.330);
+                SR.setPosition(0.670);
                 Gripper.setPosition(0.175);
-            }
+            } else if (posL > 2300) {
+                SRG.setPosition(0.57);
+                Smid.setPosition(0.98);
+                SR.setPosition(0.53);
+                SL.setPosition(0.47);
+            }else if (gamepad1.a) {
+//                S5.setPosition(0.1);
+//                SL.setPosition(0.05);
+//                SR.setPosition(0.95);
+//                SRG.setPosition(0.15);
+//                Gripper.setPosition(0.8);
+//                Smid.setPosition(0.25);
+//                S0.setPosition(0.9);
 
+                //get back
+                SRG.setPosition(0.15);
+                Gripper.setPosition(0.75);
+                SR.setPosition(0.19);
+                SL.setPosition(0.81);
+                Smid.setPosition(0.75);
+//                liftL.setPower(-1);
+//                liftR.setPower(1);
+//                Thread.sleep(400);
+            }
 
             if (gamepad1.left_trigger > 0.2 || gamepad2.dpad_down){
                 liftR.setPower(1);
@@ -244,8 +265,8 @@ public class ATeleopManual extends LinearOpMode {
 //                Gripper.setPosition(0.8);
             }else {
 
-                liftR.setPower(0.07);
-                liftL.setPower(0.07);
+                liftR.setPower(0.08);
+                liftL.setPower(0.08);
             }
 
             ////
@@ -254,24 +275,7 @@ public class ATeleopManual extends LinearOpMode {
 //                SR.setPosition(0.7);
 //            }
 //            else
-            if (posL > 2000) {
-                SRG.setPosition(0.57);
-                Smid.setPosition(0);
-                SR.setPosition(0.5);
-                SL.setPosition(0.5);
-            }else if (gamepad1.b || gamepad2.b){
-                SL.setPosition(0.135);
-                SR.setPosition(0.865);
-                Thread.sleep(50);
-                Gripper.setPosition(0.1);
-                S0.setPosition(1);
-                Thread.sleep(200);
-                SL.setPosition(0.5);
-                SR.setPosition(0.5);
-                // Rot 0
-                SRG.setPosition(0.15);
 
-            }
             if (gamepad1.x || gamepad2.x){
                 SRG.setPosition(0.57);
                 Gripper.setPosition(0.7);
